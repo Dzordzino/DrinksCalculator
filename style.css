@@ -1,0 +1,235 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Raleway", sans-serif;
+  text-align: center;
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body .backgroundHolder {
+  background: url(/images/background.jpg) center top no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-filter: blur(5px);
+          filter: blur(5px);
+  z-index: -1;
+  background-size: cover;
+}
+
+body input {
+  outline: none;
+}
+
+body .mainHolder {
+  position: absolute;
+  width: 90%;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 1rem;
+  padding: 1.5rem 0;
+  max-width: 700px;
+}
+
+body .mainHolder h1 {
+  text-align: center;
+  text-transform: uppercase;
+  padding: 1rem;
+  margin: 0;
+  color: #ad974f;
+}
+
+body .mainHolder .mainButton {
+  width: 60%;
+  margin: 0.5rem auto;
+  padding: 0.7rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  background: #8e793e;
+  border: none;
+  color: #fff;
+  outline: none;
+  border-radius: 5px;
+}
+
+body .mainHolder .mainButton:active {
+  background: #ad974f;
+}
+
+body .mainHolder .mainButton:disabled {
+  opacity: 0.5;
+}
+
+body .modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  max-height: 70%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  background: #ad974f;
+  border-radius: 1rem;
+  margin-top: 200%;
+  -webkit-transition-duration: 1s;
+          transition-duration: 1s;
+  padding: 2rem;
+  overflow-y: hidden;
+  max-width: 700px;
+}
+
+body .modal.show {
+  margin: 0;
+}
+
+body .modal input {
+  width: 100%;
+  border: 0;
+  padding: 0.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+body .modal .priceInput {
+  width: 46%;
+  float: left;
+  margin-top: 1rem;
+  margin-right: 4%;
+}
+
+body .modal .modalButton {
+  margin-top: 1rem;
+  width: 49%;
+  padding: 0.5rem;
+  border-radius: 10px;
+  background: none;
+  border: 2px solid #fff;
+  outline: none;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+body .modal .modalButton:active {
+  color: #ad974f;
+  background: #fff;
+}
+
+body .modal h2 {
+  text-align: left;
+  color: #fff;
+}
+
+body .modal .drinksList {
+  padding: 0.5rem;
+  background: #fff;
+  border-radius: 10px;
+  max-height: 27vh;
+  overflow-y: scroll;
+}
+
+body .modal .drinksList p {
+  text-transform: capitalize;
+  text-align: left;
+  font-size: 1.2rem;
+}
+
+body .modal .drinksList p span {
+  float: right;
+}
+
+body .modal .placeHolder input {
+  width: 50%;
+  float: left;
+  margin-top: 18px;
+  text-transform: capitalize;
+}
+
+body .modal .placeHolder button {
+  width: 45%;
+}
+
+body .modal .placeHolder .error {
+  display: none;
+  font-size: small;
+  color: #000;
+  text-align: center;
+  font-weight: bold;
+}
+
+body .modal .placeHolder .error.show {
+  display: block;
+}
+
+body .modal .buttonsHolder:after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+body .modal .buttonsHolder .orderButton {
+  width: auto;
+  float: left;
+  margin: 5px;
+  padding: 0.5rem;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+body .modal .buttonsHolder .orderButton span {
+  display: none;
+}
+
+body .modal .orderPrice {
+  float: left;
+  width: 30%;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+body .modal .totalPrice {
+  margin-top: 1rem;
+  width: 50%;
+  text-align: center;
+}
+
+body .modal.receiptModal .stepPreview {
+  overflow: hidden;
+}
+
+body .modal.receiptModal .stepPreview .stepHolder {
+  width: 300%;
+  margin-left: -100%;
+  -webkit-transition-duration: 0.5s;
+          transition-duration: 0.5s;
+}
+
+body .modal.receiptModal .stepPreview .stepHolder .singleStep {
+  width: 33.333333%;
+  float: left;
+}
+
+body .modal.receiptModal .stepPreview .stepHolder:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+/*# sourceMappingURL=style.css.map */
