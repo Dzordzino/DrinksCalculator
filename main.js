@@ -15,7 +15,6 @@
         },
 
         removeItem: function(itemName) {
-            console.log(itemName);
             localStorage.removeItem(itemName);
         }
     };
@@ -48,7 +47,13 @@
         eventHandler(".js-closeModal", "click", modalToggle);
         eventHandler(".js-backButton", "click", stepBack);
     }
+    function renderOverlay(target) {
+        var listData = target.querySelector(".js-itemList"),
+            sumButton = document.querySelector(".js-sumModal");
 
+        listData.innerHTML === "" ? sumButton.setAttribute("disabled", true) : sumButton.removeAttribute("disabled");
+        listData.innerHTML === "" ? listData.classList.add("emptyContent") : listData.classList.remove("emptyContent");
+    }
     function modalToggle(e) {
         var targetClass = e.currentTarget.getAttribute("data-id"),
             target = document.querySelector(".js-" + targetClass + "Modal");
@@ -64,6 +69,7 @@
                 renderReceipts();
             }
         }
+        renderOverlay(target);
     }
 
     function createDrink() {
@@ -115,6 +121,7 @@
         newPrice = priceValue + drinkPrice;
         totalPrice.value = newPrice;
         listItems = [].slice.call(orderList.children);
+        renderOverlay(singleDrink.parentElement.parentElement);
         eventHandler(listItems, "click", removeDrink);
     }
 
@@ -122,8 +129,8 @@
         var roundTotal = orderData.totalPrice.value,
             order = [].slice.call(orderData.orderList.children),
             singleOrder = [],
-            hours = new Date().getHours(),
-            minutes = new Date().getMinutes(),
+            hours = new Date().getHours() > 9 ? new Date().getHours() : 0 + new Date().getHours(),
+            minutes = new Date().getMinutes() > 9 ? new Date().getMinutes() : 0 + new Date().getMinutes(),
             time = hours + ":" + minutes,
             allOrders = orderData.getItem("orders", []),
             orderId = orderData.getItem("orderId", 0);
@@ -187,6 +194,7 @@
         [].forEach.call(listArray, function(item) {
             parentList.appendChild(item);
         });
+        renderOverlay(parentList.parentElement);
     }
 
     function showDetails(e) {
@@ -207,15 +215,12 @@
     }
 
     function resetData() {
-        var allOrders = Number(orderData.getItem("orderId", 0)),
-            action = confirm(orderData.confirmMessage);
+        var action = confirm(orderData.confirmMessage);
+
         if (action === true) {
             orderData.removeItem("drinks");
             orderData.removeItem("orderId");
-            orderData.removeItem("orders");
-            for (var i = 1; i <= allOrders; i++) {
-                orderData.removeItem("order" + i);
-            }
+            clearOrders();
             window.location.reload();
         }
     }
@@ -272,7 +277,6 @@
 
     function renderExistingDrink(placeName) {
         var drinks = orderData.getItem(placeName, ""),
-            allOrders = Number(orderData.getItem("orderId", 0)),
             listItems = "";
 
         [].forEach.call(drinks, function(item) {
@@ -280,12 +284,19 @@
         });
         listItems = [].slice.call(orderData.drinksList.children);
         document.querySelector(".js-placeName").value = placeName;
+        clearOrders();
+        renderReceipts();
+        eventHandler(listItems, "click", removeDrink);
+    }
+
+    function clearOrders() {
+        var allOrders = Number(orderData.getItem("orderId", 0));
+
         for (var i = 1; i <= allOrders; i++) {
             orderData.removeItem("order" + i);
         }
+        orderData.setItem("orderId", 0);
         orderData.removeItem("orders");
-        renderReceipts();
-        eventHandler(listItems, "click", removeDrink);
     }
 
     function showSum() {

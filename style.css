@@ -65,6 +65,7 @@ body .mainHolder .mainButton {
   color: #fff;
   outline: none;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 body .mainHolder .mainButton:active {
@@ -123,11 +124,16 @@ body .modal .modalButton {
   color: #fff;
   font-size: 1rem;
   font-weight: bold;
+  cursor: pointer;
 }
 
 body .modal .modalButton:active {
   color: #ad974f;
   background: #fff;
+}
+
+body .modal .modalButton:disabled {
+  opacity: 0.5;
 }
 
 body .modal h2 {
@@ -143,10 +149,20 @@ body .modal .drinksList {
   overflow-y: scroll;
 }
 
+body .modal .drinksList.emptyContent:after {
+  display: block;
+  content: "Empty list...";
+  text-align: left;
+  font-weight: bold;
+  color: #ccc;
+  padding: 1rem;
+}
+
 body .modal .drinksList p {
   text-transform: capitalize;
   text-align: left;
   font-size: 1.2rem;
+  cursor: pointer;
 }
 
 body .modal .drinksList p span {
@@ -161,6 +177,7 @@ body .modal .placeHolder input {
 }
 
 body .modal .placeHolder button {
+  cursor: pointer;
   width: 45%;
 }
 
@@ -192,6 +209,7 @@ body .modal .buttonsHolder .orderButton {
   color: #fff;
   text-transform: uppercase;
   font-weight: bold;
+  cursor: pointer;
 }
 
 body .modal .buttonsHolder .orderButton span {

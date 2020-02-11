@@ -53,6 +53,7 @@ body {
             color: #fff;
             outline: none;
             border-radius: 5px;
+            cursor: pointer;
             &:active {
                 background: #ad974f;
             }
@@ -102,9 +103,13 @@ body {
             color: #fff;
             font-size: 1rem;
             font-weight: bold;
+            cursor: pointer;
             &:active {
                 color: #ad974f;
                 background: #fff;
+            }
+            &:disabled {
+                opacity: 0.5;
             }
         }
         h2 {
@@ -117,10 +122,19 @@ body {
             border-radius: 10px;
             max-height: 27vh;
             overflow-y: scroll;
+            &.emptyContent:after {
+                display: block;
+                content: "Empty list...";
+                text-align: left;
+                font-weight: bold;
+                color: #ccc;
+                padding: 1rem;
+            }
             p {
                 text-transform: capitalize;
                 text-align: left;
                 font-size: 1.2rem;
+                cursor: pointer;
                 span {
                     float: right;
                 }
@@ -134,6 +148,7 @@ body {
                 text-transform: capitalize;
             }
             button {
+                cursor: pointer;
                 width: 45%;
             }
             .error {
@@ -163,6 +178,7 @@ body {
                 color: #fff;
                 text-transform: uppercase;
                 font-weight: bold;
+                cursor: pointer;
                 span {
                     display: none;
                 }
