@@ -11,95 +11,97 @@
         <link href="https://fonts.googleapis.com/css?family=Raleway:400,700&display=swap" rel="stylesheet" />
     </head>
     <body>
-        <div class="backgroundHolder"></div>
-        <div class="mainHolder">
-            <h1>Koliko smo popili</h1>
-            <button class="js-load js-mainButton mainButton" data-id="load">
-                Ucitaj mesto
-            </button>
-            <button class="js-mainButton mainButton" data-id="rounds">
-                Unesi novu turu
-            </button>
-            <button class="js-mainButton mainButton" data-id="receipt">
-                Pregled Racuna
-            </button>
-            <button class="js-mainButton mainButton js-drinksButton" data-id="drinks">
-                Unesi / Izmeni mesto
-            </button>
-            <button class="js-reset mainButton">
-                Ponisti Sve
-            </button>
-        </div>
-        <div class="js-drinksModal modal">
-            <input type="text" class="js-drinksInput" placeholder="Unesite naziv pica" />
-            <input type="text" class="js-priceInput priceInput" placeholder="Unesite cenu pica" />
-            <button class="js-enterDrink modalButton">
-                Unesi stavku
-            </button>
-            <h2>Lista Stavki</h2>
-            <div class="drinksList js-drinksList js-itemList" data-id="drinksList"></div>
-            <div class="placeHolder">
-                <input type="text" class="js-placeName" placeholder="Naziv Mesta" />
-                <button class="js-savePlace modalButton close">
-                    Sacuvaj
+        <div class="mainWrapper">
+            <div class="backgroundHolder"></div>
+            <div class="mainHolder">
+                <h1>Koliko smo popili</h1>
+                <button class="js-load js-mainButton mainButton" data-id="load">
+                    Ucitaj mesto
                 </button>
-                <p class="js-errorText error">
-                    Naziv mesta / Lista stavki moraju biti popunjeni
-                </p>
+                <button class="js-mainButton mainButton" data-id="rounds">
+                    Unesi novu turu
+                </button>
+                <button class="js-mainButton mainButton" data-id="receipt">
+                    Pregled Racuna
+                </button>
+                <button class="js-mainButton mainButton js-drinksButton" data-id="drinks">
+                    Unesi / Izmeni mesto
+                </button>
+                <button class="js-reset mainButton">
+                    Ponisti Sve
+                </button>
             </div>
-            <button class="js-closeModal modalButton close" data-id="drinks">
-                Zatvori prozor
-            </button>
-        </div>
-        <div class="js-roundsModal modal">
-            <div class="js-buttonsHolder buttonsHolder"></div>
-            <div class="drinksList js-orderList js-itemList" data-id="orderList"></div>
-            <input type="text" class="js-roundPrice orderPrice" value="0" />
-            <button class="modalButton close js-submitRound" data-id="rounds">
-                Sacuvaj Turu
-            </button>
-            <button class="js-closeModal modalButton close" data-id="rounds">
-                Zatvori prozor
-            </button>
-        </div>
-        <div class="js-receiptModal modal receiptModal">
-            <div class="stepPreview">
-                <div class="js-stepHolder stepHolder">
-                    <div class="singleStep">
-                        <h2>Ukupna kolicina</h2>
-                        <div class="drinksList js-sumInfo"></div>
-                        <button class="js-backButton modalButton">
-                            Natrag
-                        </button>
-                    </div>
-                    <div class="singleStep">
-                        <h2>Lista Tura</h2>
-                        <div class="drinksList js-receiptHolder js-itemList"></div>
-                        <input type="text" class="js-totalPrice totalPrice" placeholder="0" />
-                        <button class="js-sumModal modalButton close">
-                            Ukupna kolicina
-                        </button>
-                        <button class="js-closeModal modalButton close" data-id="receipt">
-                            Zatvori prozor
-                        </button>
-                    </div>
-                    <div class="singleStep">
-                        <h2>Ukupna kolicina</h2>
-                        <div class="infoHolder"></div>
-                        <div type="text" class="js-infoOrder drinksList"></div>
-                        <div type="text" class="js-infoPrice"></div>
-                        <button class="js-backButton modalButton">
-                            Natrag
-                        </button>
+            <div class="js-drinksModal modal">
+                <input type="text" class="js-drinksInput" placeholder="Unesite naziv pica" />
+                <input type="text" class="js-priceInput priceInput" placeholder="Unesite cenu pica" />
+                <button class="js-enterDrink modalButton">
+                    Unesi stavku
+                </button>
+                <h2>Lista Stavki</h2>
+                <div class="drinksList js-drinksList js-itemList" data-id="drinksList"></div>
+                <div class="placeHolder">
+                    <input type="text" class="js-placeName" placeholder="Naziv Mesta" />
+                    <button class="js-savePlace modalButton close">
+                        Sacuvaj
+                    </button>
+                    <p class="js-errorText error">
+                        Naziv mesta / Lista stavki moraju biti popunjeni
+                    </p>
+                </div>
+                <button class="js-closeModal modalButton close" data-id="drinks">
+                    Zatvori prozor
+                </button>
+            </div>
+            <div class="js-roundsModal modal">
+                <div class="js-buttonsHolder buttonsHolder"></div>
+                <div class="drinksList js-orderList js-itemList" data-id="orderList"></div>
+                <input type="text" class="js-roundPrice orderPrice" value="0" />
+                <button class="modalButton close js-submitRound" data-id="rounds">
+                    Sacuvaj Turu
+                </button>
+                <button class="js-closeModal modalButton close" data-id="rounds">
+                    Zatvori prozor
+                </button>
+            </div>
+            <div class="js-receiptModal modal receiptModal">
+                <div class="stepPreview">
+                    <div class="js-stepHolder stepHolder">
+                        <div class="singleStep">
+                            <h2>Ukupna kolicina</h2>
+                            <div class="drinksList js-sumInfo"></div>
+                            <button class="js-backButton modalButton">
+                                Natrag
+                            </button>
+                        </div>
+                        <div class="singleStep">
+                            <h2>Lista Tura</h2>
+                            <div class="drinksList js-receiptHolder js-itemList"></div>
+                            <input type="text" class="js-totalPrice totalPrice" placeholder="0" />
+                            <button class="js-sumModal modalButton close">
+                                Ukupna kolicina
+                            </button>
+                            <button class="js-closeModal modalButton close" data-id="receipt">
+                                Zatvori prozor
+                            </button>
+                        </div>
+                        <div class="singleStep">
+                            <h2>Ukupna kolicina</h2>
+                            <div class="infoHolder"></div>
+                            <div type="text" class="js-infoOrder drinksList"></div>
+                            <div type="text" class="js-infoPrice"></div>
+                            <button class="js-backButton modalButton">
+                                Natrag
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="js-loadModal modal">
-            <div class="drinksList js-placesList js-itemList"></div>
-            <button class="js-closeModal modalButton close" data-id="load">
-                Zatvori prozor
-            </button>
+            <div class="js-loadModal modal">
+                <div class="drinksList js-placesList js-itemList"></div>
+                <button class="js-closeModal modalButton close" data-id="load">
+                    Zatvori prozor
+                </button>
+            </div>
         </div>
         <script src="/main.js"></script>
     </body>

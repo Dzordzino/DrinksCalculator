@@ -240,7 +240,7 @@
         });
         if (placeName !== "" && drinkList.length !== 0) {
             placeName = placeName.charAt(0).toUpperCase() + placeName.slice(1);
-            if (!allPlaces.indexOf(placeName) > -1) {
+            if (allPlaces.indexOf(placeName) === -1) {
                 allPlaces.push(placeName);
             }
             orderData.setItem(placeName, drinkList);
@@ -330,7 +330,7 @@
             array.push(singleDrink);
         });
         sumAll = array.reduce(function(total, currentValue) {
-            if (allDrinks.indexOf(currentValue) == -1) {
+            if (allDrinks.indexOf(currentValue) === -1) {
                 allDrinks.push(currentValue);
             }
             total[currentValue] = total[currentValue] + 1 || 1;
