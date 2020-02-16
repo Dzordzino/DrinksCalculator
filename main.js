@@ -72,13 +72,14 @@
         renderOverlay(target);
     }
 
-    function createDrink() {
+    function createDrink(e) {
         var input = document.querySelector(".js-drinksInput"),
             inputValue = input.value,
             price = document.querySelector(".js-priceInput"),
             drinksArray = orderData.getItem("drinks", []),
             singleDrink = "",
-            listItems = "";
+            listItems = "",
+            drinkCreated = e.currentTarget;
 
         if (inputValue !== "") {
             singleDrink =
@@ -95,6 +96,7 @@
         }
         listItems = [].slice.call(orderData.drinksList.children);
         eventHandler(listItems, "click", removeDrink);
+        renderOverlay(drinkCreated.parentElement.parentElement);
     }
 
     function renderDrinks() {
@@ -128,14 +130,15 @@
     function submitRound(e) {
         var roundTotal = orderData.totalPrice.value,
             order = [].slice.call(orderData.orderList.children),
-            singleOrder = [],
+            singleOrder = "",
             hours = new Date().getHours() > 9 ? new Date().getHours() : 0 + new Date().getHours(),
             minutes = new Date().getMinutes() > 9 ? new Date().getMinutes() : 0 + new Date().getMinutes(),
             time = hours + ":" + minutes,
             allOrders = orderData.getItem("orders", []),
             orderId = orderData.getItem("orderId", 0);
-        [].forEach.call(order, function(item) {
-            singleOrder.push(item.outerHTML);
+
+        singleOrder = order.map(function(item) {
+            return item.outerHTML;
         });
         if (order !== "") {
             orderId++;
@@ -232,8 +235,8 @@
             errorText = document.querySelector(".js-errorText"),
             allItems = [].slice.call(orderData.drinksList.children);
 
-        [].forEach.call(allItems, function(item) {
-            drinkList.push(item.outerHTML);
+        drinkList = allItems.map(function(item) {
+            return item.outerHTML;
         });
         if (placeName !== "" && drinkList.length !== 0) {
             placeName = placeName.charAt(0).toUpperCase() + placeName.slice(1);
