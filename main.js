@@ -1,56 +1,23 @@
 (function() {
-    var root = document.documentElement;
-    var orderData = {
-        confirmMessage: "Da li zelite sve da obrisete sve podatke",
-        drinksList: document.querySelector(".js-drinksList"),
-        orderList: document.querySelector(".js-orderList"),
-        totalPrice: document.querySelector(".js-roundPrice"),
-        pageUrl: window.location.href,
-        languageObject: "",
-        language: "rs",
-
-        getItem: function(item, defaultValue) {
-            var orderItem = localStorage.getItem(item) !== null ? JSON.parse(localStorage.getItem(item)) : defaultValue;
-            return orderItem;
-        },
-
-        setItem: function(itemName, itemValue) {
-            localStorage.setItem(itemName, JSON.stringify(itemValue));
-        },
-
-        removeItem: function(itemName) {
-            localStorage.removeItem(itemName);
-        }
-    };
-
-    function eventHandler(objectData, eventName, functionTrigger) {
-        var array = "";
-        if (!Array.isArray(objectData)) {
-            array =
-                document.querySelectorAll(objectData) !== null
-                    ? [].slice.call(document.querySelectorAll(objectData))
-                    : [];
-        } else {
-            array = objectData;
-        }
-        if (array.length !== 0) {
-            [].forEach.call(array, function(item) {
-                item.addEventListener(eventName, functionTrigger);
-            });
-        }
-    }
+    var root = document.documentElement,
+        drinksList = document.querySelector(".js-drinksList"),
+        orderList = document.querySelector(".js-orderList"),
+        totalPrice = document.querySelector(".js-roundPrice"),
+        pageUrl = window.location.href,
+        languageObject = "",
+        language = "rs";
 
     function addEventListeners() {
-        eventHandler(".js-enterDrink", "click", createDrink);
-        eventHandler(".js-submitRound", "click", submitRound);
-        eventHandler(".js-reset", "click", resetData);
-        eventHandler(".js-savePlace", "click", savePlace);
-        eventHandler(".js-loadPlace", "click", loadData);
-        eventHandler(".js-sumModal", "click", showSum);
-        eventHandler(".js-mainButton", "click", modalToggle);
-        eventHandler(".js-closeModal", "click", modalToggle);
-        eventHandler(".js-backButton", "click", stepBack);
-        eventHandler(".js-languageChange ", "click", languageChange);
+        orderUtils.eventHandler(".js-enterDrink", "click", createDrink);
+        orderUtils.eventHandler(".js-submitRound", "click", submitRound);
+        orderUtils.eventHandler(".js-reset", "click", resetData);
+        orderUtils.eventHandler(".js-savePlace", "click", savePlace);
+        orderUtils.eventHandler(".js-loadPlace", "click", loadData);
+        orderUtils.eventHandler(".js-sumModal", "click", showSum);
+        orderUtils.eventHandler(".js-mainButton", "click", modalToggle);
+        orderUtils.eventHandler(".js-closeModal", "click", modalToggle);
+        orderUtils.eventHandler(".js-backButton", "click", stepBack);
+        orderUtils.eventHandler(".js-languageChange ", "click", languageChange);
     }
     function renderOverlay(target) {
         var listData = target.querySelector(".js-itemList"),
@@ -63,14 +30,14 @@
         var targetClass = e.currentTarget.getAttribute("data-id"),
             target = document.querySelector(".js-" + targetClass + "Modal");
 
-        if (target !== null && target.classList.contains("show")) {
+        if (target && target.classList.contains("show")) {
             target.classList.remove("show");
-        } else if (target !== null && !target.classList.contains("show")) {
+        } else if (target && !target.classList.contains("show")) {
             target.classList.add("show");
             if (targetClass === "rounds") {
                 renderDrinks();
             }
-            if (targetClass === "receipt" && localStorage.getItem("orders") !== null) {
+            if (targetClass === "receipt" && localStorage.getItem("orders")) {
                 renderReceipts();
             }
         }
@@ -81,44 +48,42 @@
         var input = document.querySelector(".js-drinksInput"),
             inputValue = input.value,
             price = document.querySelector(".js-priceInput"),
-            drinksArray = orderData.getItem("drinks", []),
+            drinksArray = orderUtils.getItem("drinks", []),
             singleDrink = "",
             listItems = "",
             drinkCreated = e.currentTarget;
 
-        if (inputValue !== "") {
+        if (inputValue) {
             singleDrink =
                 '<p class="js-orderItem js-drinkOrdered orderButton">' +
                 inputValue +
                 "<span>" +
                 price.value +
                 "</span></p>";
-            orderData.drinksList.innerHTML += singleDrink;
+            drinksList.innerHTML += singleDrink;
             drinksArray.push(singleDrink);
-            orderData.setItem("drinks", drinksArray);
+            orderUtils.setItem("drinks", drinksArray);
             input.value = "";
             price.value = "";
         }
-        listItems = [].slice.call(orderData.drinksList.children);
-        eventHandler(listItems, "click", removeDrink);
+        listItems = [].slice.call(drinksList.children);
+        orderUtils.eventHandler(listItems, "click", removeDrink);
         renderOverlay(drinkCreated.parentElement.parentElement);
     }
 
     function renderDrinks() {
-        var addedDrinksArray = orderData.getItem("drinks", []),
+        var addedDrinksArray = orderUtils.getItem("drinks", []),
             modalButtonsHolder = document.querySelector(".js-buttonsHolder");
 
         modalButtonsHolder.innerHTML = "";
-        if (addedDrinksArray !== []) {
+        if (addedDrinksArray) {
             modalButtonsHolder.innerHTML += addedDrinksArray;
         }
-        eventHandler(".js-drinkOrdered", "click", drinkAdd);
+        orderUtils.eventHandler(".js-drinkOrdered", "click", drinkAdd);
     }
 
     function drinkAdd(e) {
-        var orderList = orderData.orderList,
-            singleDrink = e.currentTarget,
-            totalPrice = orderData.totalPrice,
+        var singleDrink = e.currentTarget,
             priceValue = Number(totalPrice.value),
             newPrice = "",
             drinkPrice = Number(singleDrink.querySelector("span").innerHTML),
@@ -129,36 +94,36 @@
         totalPrice.value = newPrice;
         listItems = [].slice.call(orderList.children);
         renderOverlay(singleDrink.parentElement.parentElement);
-        eventHandler(listItems, "click", removeDrink);
+        orderUtils.eventHandler(listItems, "click", removeDrink);
     }
 
     function submitRound(e) {
-        var roundTotal = orderData.totalPrice.value,
-            order = [].slice.call(orderData.orderList.children),
+        var roundTotal = totalPrice.value,
+            order = [].slice.call(orderList.children),
             singleOrder = "",
             hours = new Date().getHours() > 9 ? new Date().getHours() : 0 + new Date().getHours(),
             minutes = new Date().getMinutes() > 9 ? new Date().getMinutes() : 0 + new Date().getMinutes(),
             time = hours + ":" + minutes,
-            allOrders = orderData.getItem("orders", []),
-            orderId = orderData.getItem("orderId", 0);
+            allOrders = orderUtils.getItem("orders", []),
+            orderId = orderUtils.getItem("orderId", 0);
 
         singleOrder = order.map(function(item) {
             return item.outerHTML;
         });
-        if (order !== "") {
+        if (order) {
             orderId++;
             allOrders.push("order" + orderId + "&" + time + "&" + roundTotal);
-            orderData.setItem("orderId", orderId);
-            orderData.setItem("orders", allOrders);
-            orderData.setItem("order" + orderId, singleOrder);
-            orderData.orderList.innerHTML = "";
-            orderData.totalPrice.value = 0;
+            orderUtils.setItem("orderId", orderId);
+            orderUtils.setItem("orders", allOrders);
+            orderUtils.setItem("order" + orderId, singleOrder);
+            orderList.innerHTML = "";
+            totalPrice.value = 0;
             modalToggle(e);
         }
     }
 
     function renderReceipts() {
-        var allOrders = orderData.getItem("orders", []),
+        var allOrders = orderUtils.getItem("orders", []),
             info = "",
             tatalValue = 0,
             receiptHolder = document.querySelector(".js-receiptHolder"),
@@ -182,14 +147,13 @@
             }
         });
         totalPrice.value = tatalValue;
-        eventHandler(".js-orderInfo", "click", showDetails);
+        orderUtils.eventHandler(".js-orderInfo", "click", showDetails);
     }
 
     function removeDrink(e) {
         var singleItem = e.currentTarget,
             drinkParent = singleItem.parentElement.getAttribute("data-id"),
-            parentList = orderData[drinkParent],
-            totalPrice = orderData.totalPrice,
+            parentList = document.querySelector(".js-" + drinkParent),
             allItems = parentList.querySelectorAll(".js-orderItem"),
             listArray = [].slice.call(allItems).filter(function(item) {
                 return item !== singleItem;
@@ -208,7 +172,7 @@
     function showDetails(e) {
         var singleOrderInfo = e.currentTarget,
             singleId = singleOrderInfo.getAttribute("data-id"),
-            orderInfo = orderData.getItem(singleId, ""),
+            orderInfo = orderUtils.getItem(singleId, ""),
             orderHolder = document.querySelector(".js-infoOrder");
 
         orderHolder.innerHTML = "";
@@ -223,11 +187,11 @@
     }
 
     function resetData() {
-        var action = confirm(orderData.languageObject[orderData.language]["Obrisi podatke"]);
+        var action = confirm(languageObject[language]["Obrisi podatke"]);
 
-        if (action === true) {
-            orderData.removeItem("drinks");
-            orderData.removeItem("orderId");
+        if (action) {
+            orderUtils.removeItem("drinks");
+            orderUtils.removeItem("orderId");
             clearOrders();
             window.location.reload();
         }
@@ -236,21 +200,21 @@
     function savePlace() {
         var placeName = document.querySelector(".js-placeName").value,
             drinkList = [],
-            allPlaces = orderData.getItem("allPlaces", []),
+            allPlaces = orderUtils.getItem("allPlaces", []),
             errorText = document.querySelector(".js-errorText"),
-            allItems = [].slice.call(orderData.drinksList.children);
+            allItems = [].slice.call(drinksList.children);
 
         drinkList = allItems.map(function(item) {
             return item.outerHTML;
         });
-        if (placeName !== "" && drinkList.length !== 0) {
+        if (placeName && drinkList.length) {
             placeName = placeName.charAt(0).toUpperCase() + placeName.slice(1);
             if (allPlaces.indexOf(placeName) === -1) {
                 allPlaces.push(placeName);
             }
-            orderData.setItem(placeName, drinkList);
-            orderData.setItem("allPlaces", allPlaces);
-            orderData.setItem("drinks", drinkList);
+            orderUtils.setItem(placeName, drinkList);
+            orderUtils.setItem("allPlaces", allPlaces);
+            orderUtils.setItem("drinks", drinkList);
             errorText.classList.remove("show");
             renderLoad();
         } else {
@@ -260,18 +224,18 @@
 
     function loadData(e) {
         var placeName = e.currentTarget.innerHTML,
-            placeData = orderData.getItem(placeName, "");
+            placeData = orderUtils.getItem(placeName, "");
 
-        orderData.setItem("drinks", placeData);
-        orderData.drinksList.innerHTML = "";
+        orderUtils.setItem("drinks", placeData);
+        drinksList.innerHTML = "";
         renderExistingDrink(placeName);
     }
 
     function renderLoad() {
-        var allPlaces = orderData.getItem("allPlaces", []),
+        var allPlaces = orderUtils.getItem("allPlaces", []),
             loadButton = document.querySelector(".js-load"),
             placesList = document.querySelector(".js-placesList");
-        if (allPlaces.length > 0) {
+        if (allPlaces.length) {
             placesList.innerHTML = "";
             loadButton.removeAttribute("disabled");
             [].forEach.call(allPlaces, function(item) {
@@ -281,31 +245,30 @@
             loadButton.setAttribute("disabled", true);
         }
         getLanguage();
-        eventHandler(".js-closeModal", "click", modalToggle);
+        orderUtils.eventHandler(".js-closeModal", "click", modalToggle);
     }
 
     function renderExistingDrink(placeName) {
-        var drinks = orderData.getItem(placeName, ""),
+        var drinks = orderUtils.getItem(placeName, ""),
             listItems = "";
 
         [].forEach.call(drinks, function(item) {
-            orderData.drinksList.innerHTML += item;
+            drinksList.innerHTML += item;
         });
-        listItems = [].slice.call(orderData.drinksList.children);
+        listItems = [].slice.call(drinksList.children);
         document.querySelector(".js-placeName").value = placeName;
         clearOrders();
         renderReceipts();
-        eventHandler(listItems, "click", removeDrink);
+        orderUtils.eventHandler(listItems, "click", removeDrink);
     }
 
     function clearOrders() {
-        var allOrders = Number(orderData.getItem("orderId", 0));
-
+        var allOrders = Number(orderUtils.getItem("orderId", 0));
         for (var i = 1; i <= allOrders; i++) {
-            orderData.removeItem("order" + i);
+            orderUtils.removeItem("order" + i);
         }
-        orderData.setItem("orderId", 0);
-        orderData.removeItem("orders");
+        orderUtils.setItem("orderId", 0);
+        orderUtils.removeItem("orders");
     }
 
     function showSum() {
@@ -314,12 +277,12 @@
     }
 
     function renderSum() {
-        var orderNumber = orderData.getItem("orderId", 0),
+        var orderNumber = orderUtils.getItem("orderId", 0),
             object = "",
             sumArray = [];
 
         for (var i = 1; i <= orderNumber; i++) {
-            object = orderData.getItem("order" + i, 0);
+            object = orderUtils.getItem("order" + i, 0);
             drinksSum(object, sumArray);
         }
     }
@@ -360,29 +323,29 @@
     }
 
     function getLanguage() {
-        var appLang = orderData.getItem("lang", "rs"),
+        var appLang = orderUtils.getItem("lang", "rs"),
             langReque = new XMLHttpRequest(),
             styleText = "";
 
         langReque.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                orderData.languageObject = JSON.parse(this.responseText);
-                styleText = '"' + orderData.languageObject[appLang]["Prazna lista"] + '"';
+                languageObject = JSON.parse(this.responseText);
+                styleText = '"' + languageObject[appLang]["Prazna lista"] + '"';
                 root.style.setProperty("--emptyText", styleText);
                 renderLanguage(appLang);
             }
         };
-        langReque.open("GET", `${orderData.pageUrl}/language.json`, true);
+        langReque.open("GET", `${pageUrl}/language.json`, true);
         langReque.send();
     }
 
     function languageChange(e) {
         var currentLanguage = e.currentTarget.getAttribute("data-id");
-        styleTextChange = '"' + orderData.languageObject[currentLanguage]["Prazna lista"] + '"';
+        styleTextChange = '"' + languageObject[currentLanguage]["Prazna lista"] + '"';
 
         root.style.setProperty("--emptyText", styleTextChange);
-        orderData.setItem("lang", currentLanguage);
-        orderData.language = currentLanguage;
+        orderUtils.setItem("lang", currentLanguage);
+        language = currentLanguage;
         renderLanguage(currentLanguage);
     }
 
@@ -394,15 +357,15 @@
 
         [].forEach.call(languageVariables, function(item) {
             itemText = item.getAttribute("data-text");
-            if (itemText !== null) {
-                item.innerHTML = orderData.languageObject[lang][itemText];
+            if (itemText) {
+                item.innerHTML = languageObject[lang][itemText];
             }
         });
 
         [].forEach.call(placeholderVariables, function(item) {
             itemPlaceholder = item.getAttribute("data-placeholder");
-            if (itemPlaceholder !== null) {
-                item.setAttribute("placeholder", orderData.languageObject[lang][itemPlaceholder]);
+            if (itemPlaceholder) {
+                item.setAttribute("placeholder", languageObject[lang][itemPlaceholder]);
             }
         });
     }
