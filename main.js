@@ -257,7 +257,6 @@
         });
         listItems = [].slice.call(drinksList.children);
         document.querySelector(".js-placeName").value = placeName;
-        clearOrders();
         renderReceipts();
         orderUtils.eventHandler(listItems, "click", removeDrink);
     }
