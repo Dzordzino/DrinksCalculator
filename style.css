@@ -1,3 +1,7 @@
+:root {
+  --emptyText: "Prazna lista...";
+}
+
 * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -12,6 +16,30 @@ body {
   text-align: center;
   overflow: hidden;
   background: #000;
+}
+
+body .languageHolder {
+  width: auto;
+  float: right;
+  padding: 1rem;
+}
+
+body .languageHolder .languageButton {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+  float: left;
+  margin-right: 0.5rem;
+}
+
+body .languageHolder .languageButton.en {
+  background: url(/images/en.png) no-repeat;
+  background-size: cover;
+}
+
+body .languageHolder .languageButton.rs {
+  background: url(/images/rs.png) no-repeat;
+  background-size: cover;
 }
 
 body .backgroundHolder {
@@ -150,7 +178,7 @@ body .modal .drinksList {
 
 body .modal .drinksList.emptyContent:after {
   display: block;
-  content: "Prazna lista...";
+  content: var(--emptyText);
   text-align: left;
   font-weight: bold;
   color: #ccc;

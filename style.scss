@@ -1,3 +1,7 @@
+:root {
+    --emptyText: "Prazna lista...";
+}
+
 * {
     box-sizing: border-box;
 }
@@ -9,6 +13,26 @@ body {
     text-align: center;
     overflow: hidden;
     background: #000;
+    .languageHolder {
+        width: auto;
+        float: right;
+        padding: 1rem;
+        .languageButton {
+            width: 1.5rem;
+            height: 1.5rem;
+            display: block;
+            float: left;
+            margin-right: 0.5rem;
+            &.en {
+                background: url(/images/en.png) no-repeat;
+                background-size: cover;
+            }
+            &.rs {
+                background: url(/images/rs.png) no-repeat;
+                background-size: cover;
+            }
+        }
+    }
     .backgroundHolder {
         background: url(/images/background.jpg) center top no-repeat;
         position: absolute;
@@ -123,7 +147,7 @@ body {
             overflow-y: scroll;
             &.emptyContent:after {
                 display: block;
-                content: "Prazna lista...";
+                content: var(--emptyText);
                 text-align: left;
                 font-weight: bold;
                 color: #ccc;

@@ -1,9 +1,13 @@
 (function() {
+    var root = document.documentElement;
     var orderData = {
         confirmMessage: "Da li zelite sve da obrisete sve podatke",
         drinksList: document.querySelector(".js-drinksList"),
         orderList: document.querySelector(".js-orderList"),
         totalPrice: document.querySelector(".js-roundPrice"),
+        pageUrl: window.location.href,
+        languageObject: "",
+        language: "rs",
 
         getItem: function(item, defaultValue) {
             var orderItem = localStorage.getItem(item) !== null ? JSON.parse(localStorage.getItem(item)) : defaultValue;
@@ -46,6 +50,7 @@
         eventHandler(".js-mainButton", "click", modalToggle);
         eventHandler(".js-closeModal", "click", modalToggle);
         eventHandler(".js-backButton", "click", stepBack);
+        eventHandler(".js-languageChange ", "click", languageChange);
     }
     function renderOverlay(target) {
         var listData = target.querySelector(".js-itemList"),
@@ -218,7 +223,7 @@
     }
 
     function resetData() {
-        var action = confirm(orderData.confirmMessage);
+        var action = confirm(orderData.languageObject[orderData.language]["Obrisi podatke"]);
 
         if (action === true) {
             orderData.removeItem("drinks");
@@ -275,6 +280,7 @@
         } else {
             loadButton.setAttribute("disabled", true);
         }
+        getLanguage();
         eventHandler(".js-closeModal", "click", modalToggle);
     }
 
@@ -350,6 +356,54 @@
             singleItem = item.match("<s*p[^>]*>(.*?)<s*/s*p>");
             sumHolder.innerHTML +=
                 '<p class="orderButton">' + singleItem[1] + "<span>" + singleItemValue + "</span></p>";
+        });
+    }
+
+    function getLanguage() {
+        var appLang = orderData.getItem("lang", "rs"),
+            langReque = new XMLHttpRequest(),
+            styleText = "";
+
+        langReque.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                orderData.languageObject = JSON.parse(this.responseText);
+                styleText = '"' + orderData.languageObject[appLang]["Prazna lista"] + '"';
+                root.style.setProperty("--emptyText", styleText);
+                renderLanguage(appLang);
+            }
+        };
+        langReque.open("GET", `${orderData.pageUrl}/language.json`, true);
+        langReque.send();
+    }
+
+    function languageChange(e) {
+        var currentLanguage = e.currentTarget.getAttribute("data-id");
+        styleTextChange = '"' + orderData.languageObject[currentLanguage]["Prazna lista"] + '"';
+
+        root.style.setProperty("--emptyText", styleTextChange);
+        orderData.setItem("lang", currentLanguage);
+        orderData.language = currentLanguage;
+        renderLanguage(currentLanguage);
+    }
+
+    function renderLanguage(lang) {
+        var languageVariables = document.querySelectorAll("[data-text]"),
+            placeholderVariables = document.querySelectorAll("[placeholder]"),
+            itemText = "",
+            itemPlaceholder = "";
+
+        [].forEach.call(languageVariables, function(item) {
+            itemText = item.getAttribute("data-text");
+            if (itemText !== null) {
+                item.innerHTML = orderData.languageObject[lang][itemText];
+            }
+        });
+
+        [].forEach.call(placeholderVariables, function(item) {
+            itemPlaceholder = item.getAttribute("data-placeholder");
+            if (itemPlaceholder !== null) {
+                item.setAttribute("placeholder", orderData.languageObject[lang][itemPlaceholder]);
+            }
         });
     }
 
