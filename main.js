@@ -339,8 +339,8 @@
     }
 
     function languageChange(e) {
-        var currentLanguage = e.currentTarget.getAttribute("data-id");
-        styleTextChange = '"' + languageObject[currentLanguage]["Prazna lista"] + '"';
+        var currentLanguage = e.currentTarget.getAttribute("data-id"),
+            styleTextChange = '"' + languageObject[currentLanguage]["Prazna lista"] + '"';
 
         root.style.setProperty("--emptyText", styleTextChange);
         orderUtils.setItem("lang", currentLanguage);
