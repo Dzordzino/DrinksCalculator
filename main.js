@@ -8,6 +8,7 @@
         language = "rs";
 
     function addEventListeners() {
+        var m = new toggleModal({pagesNumber: 1})
         orderUtils.eventHandler(".js-enterDrink", "click", createDrink);
         orderUtils.eventHandler(".js-submitRound", "click", submitRound);
         orderUtils.eventHandler(".js-reset", "click", resetData);
