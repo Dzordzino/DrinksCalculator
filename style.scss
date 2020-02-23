@@ -18,19 +18,13 @@ body {
         float: right;
         padding: 1rem;
         .languageButton {
-            width: 1.5rem;
-            height: 1.5rem;
             display: block;
             float: left;
-            margin-right: 0.5rem;
-            &.en {
-                background: url(/images/en.png) no-repeat;
-                background-size: cover;
-            }
-            &.rs {
-                background: url(/images/rs.png) no-repeat;
-                background-size: cover;
-            }
+            font-weight: bold;
+            color: #8e793e;
+            cursor: pointer;
+            font-size: 1.3rem;
+            padding: 0.3rem;
         }
     }
     .backgroundHolder {

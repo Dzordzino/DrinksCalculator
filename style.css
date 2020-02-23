@@ -25,21 +25,13 @@ body .languageHolder {
 }
 
 body .languageHolder .languageButton {
-  width: 1.5rem;
-  height: 1.5rem;
   display: block;
   float: left;
-  margin-right: 0.5rem;
-}
-
-body .languageHolder .languageButton.en {
-  background: url(/images/en.png) no-repeat;
-  background-size: cover;
-}
-
-body .languageHolder .languageButton.rs {
-  background: url(/images/rs.png) no-repeat;
-  background-size: cover;
+  font-weight: bold;
+  color: #8e793e;
+  cursor: pointer;
+  font-size: 1.3rem;
+  padding: 0.3rem;
 }
 
 body .backgroundHolder {

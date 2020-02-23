@@ -334,7 +334,7 @@
             styleText = "";
 
         langReque.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
+            if (this.readyState === 4 && this.status === 200) {
                 languageObject = JSON.parse(this.responseText);
                 styleText = '"' + languageObject[appLang]["Prazna lista"] + '"';
                 root.style.setProperty("--emptyText", styleText);
@@ -381,7 +381,7 @@
             modalArray = "";
 
         allModals.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
+            if (this.readyState === 4 && this.status === 200) {
                 modalArray = JSON.parse(this.responseText);
                 [].forEach.call(modalArray.modals, function(item) {
                     new createModals(item);
