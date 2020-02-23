@@ -252,8 +252,11 @@ body .modal .orderPrice {
 
 body .modal .totalPrice {
   margin-top: 1rem;
-  width: 50%;
+  width: 49%;
+  margin-right: 1%;
   text-align: center;
+  border: 2px solid #fff;
+  border-radius: 10px;
 }
 
 body .modal.receiptModal .stepPreview {

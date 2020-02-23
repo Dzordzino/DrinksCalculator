@@ -1,14 +1,14 @@
 (function() {
     var root = document.documentElement,
-        drinksList = document.querySelector(".js-drinksList"),
-        orderList = document.querySelector(".js-orderList"),
-        totalPrice = document.querySelector(".js-roundPrice"),
-        pageUrl = window.location.href,
+        drinksList = "",
+        orderList = "",
+        totalPrice = "",
+        pageUrl = window.location.origin,
         languageObject = "",
-        language = "rs";
+        language = "rs",
+        showElement = "";
 
     function addEventListeners() {
-        var m = new toggleModal({pagesNumber: 1})
         orderUtils.eventHandler(".js-enterDrink", "click", createDrink);
         orderUtils.eventHandler(".js-submitRound", "click", submitRound);
         orderUtils.eventHandler(".js-reset", "click", resetData);
@@ -22,27 +22,32 @@
     }
     function renderOverlay(target) {
         var listData = target.querySelector(".js-itemList"),
-            sumButton = document.querySelector(".js-sumModal");
+            sumButton = document.querySelector(".js-sumModal"),
+            submitButton = document.querySelector(".js-submitRound");
 
-        listData.innerHTML === "" ? sumButton.setAttribute("disabled", true) : sumButton.removeAttribute("disabled");
-        listData.innerHTML === "" ? listData.classList.add("emptyContent") : listData.classList.remove("emptyContent");
+        if (!listData.innerHTML) {
+            sumButton.setAttribute("disabled", true);
+            submitButton.setAttribute("disabled", true);
+            listData.classList.add("emptyContent");
+        } else {
+            sumButton.removeAttribute("disabled");
+            submitButton.removeAttribute("disabled");
+            listData.classList.remove("emptyContent");
+        }
     }
     function modalToggle(e) {
-        var targetClass = e.currentTarget.getAttribute("data-id"),
-            target = document.querySelector(".js-" + targetClass + "Modal");
-
-        if (target && target.classList.contains("show")) {
-            target.classList.remove("show");
-        } else if (target && !target.classList.contains("show")) {
-            target.classList.add("show");
-            if (targetClass === "rounds") {
+        var targetElement = e.currentTarget;
+        if (!targetElement.classList.contains("js-closeModal")) {
+            createModals.prototype.openModal(e);
+            showElement = document.querySelector(".show");
+            if (showElement.classList.contains("js-roundsModal")) {
                 renderDrinks();
             }
-            if (targetClass === "receipt" && localStorage.getItem("orders")) {
+            if (showElement.classList.contains("js-receiptModal") && localStorage.getItem("orders")) {
                 renderReceipts();
             }
+            renderOverlay(showElement);
         }
-        renderOverlay(target);
     }
 
     function createDrink(e) {
@@ -119,7 +124,7 @@
             orderUtils.setItem("order" + orderId, singleOrder);
             orderList.innerHTML = "";
             totalPrice.value = 0;
-            modalToggle(e);
+            createModals.prototype.closeModal(e);
         }
     }
 
@@ -153,14 +158,13 @@
 
     function removeDrink(e) {
         var singleItem = e.currentTarget,
-            drinkParent = singleItem.parentElement.getAttribute("data-id"),
-            parentList = document.querySelector(".js-" + drinkParent),
+            parentList = singleItem.parentElement,
             allItems = parentList.querySelectorAll(".js-orderItem"),
             listArray = [].slice.call(allItems).filter(function(item) {
                 return item !== singleItem;
             });
 
-        if (drinkParent === "orderList") {
+        if (parentList.classList.contains("js-orderList")) {
             totalPrice.value = totalPrice.value - Number(singleItem.querySelector("span").innerHTML);
         }
         parentList.innerHTML = "";
@@ -235,7 +239,9 @@
     function renderLoad() {
         var allPlaces = orderUtils.getItem("allPlaces", []),
             loadButton = document.querySelector(".js-load"),
-            placesList = document.querySelector(".js-placesList");
+            placesList = document.querySelector(".js-placesList"),
+            closeFucntion = createModals.prototype.closeModal;
+
         if (allPlaces.length) {
             placesList.innerHTML = "";
             loadButton.removeAttribute("disabled");
@@ -246,7 +252,7 @@
             loadButton.setAttribute("disabled", true);
         }
         getLanguage();
-        orderUtils.eventHandler(".js-closeModal", "click", modalToggle);
+        orderUtils.eventHandler(".js-closeModal", "click", closeFucntion);
     }
 
     function renderExistingDrink(placeName) {
@@ -357,18 +363,39 @@
 
         [].forEach.call(languageVariables, function(item) {
             itemText = item.getAttribute("data-text");
-            if (itemText) {
+            if (itemText && languageObject[lang][itemText]) {
                 item.innerHTML = languageObject[lang][itemText];
             }
         });
 
         [].forEach.call(placeholderVariables, function(item) {
             itemPlaceholder = item.getAttribute("data-placeholder");
-            if (itemPlaceholder) {
+            if (itemPlaceholder && languageObject[lang][itemPlaceholder]) {
                 item.setAttribute("placeholder", languageObject[lang][itemPlaceholder]);
             }
         });
     }
 
-    return renderLoad(), addEventListeners();
+    function renderContent() {
+        var allModals = new XMLHttpRequest(),
+            modalArray = "";
+
+        allModals.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                modalArray = JSON.parse(this.responseText);
+                [].forEach.call(modalArray.modals, function(item) {
+                    new createModals(item);
+                });
+                drinksList = document.querySelector(".js-drinksList");
+                orderList = document.querySelector(".js-orderList");
+                totalPrice = document.querySelector(".js-roundPrice");
+                renderLoad();
+                addEventListeners();
+            }
+        };
+        allModals.open("GET", `${pageUrl}/modal.json`, true);
+        allModals.send();
+    }
+
+    return renderContent();
 })();

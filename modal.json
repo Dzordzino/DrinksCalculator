@@ -1,0 +1,29 @@
+{
+    "modals": [
+        {
+            "modalClass": "js-loadModal",
+            "listClass": "js-placesList js-itemList",
+            "closeButton": true
+        },
+        {
+            "modalClass": "js-roundsModal",
+            "listClass": "js-orderList js-itemList",
+            "closeButton": true,
+            "buttonsHolder": true,
+            "infoHolder": true
+        },
+        {
+            "modalClass": "js-drinksModal",
+            "listClass": "js-drinksList js-itemList",
+            "title": "Lista Stavki",
+            "closeButton": true,
+            "placeHolder": true,
+            "newDrinkIput": true
+        },
+        {
+            "modalClass": "js-receiptModal receiptModal",
+            "closeButton": true,
+            "pagesNumber": 3
+        }
+    ]
+}
