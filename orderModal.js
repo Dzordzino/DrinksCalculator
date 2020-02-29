@@ -12,9 +12,10 @@ var createModals = (function() {
             infoHolder: false,
             placeHolder: false,
             newDrinkIput: false,
-            title: ""
+            title: "",
+            bodyCloseModal: false
         };
-
+        this.backgroundCloseButton = ""
         this.closeButton = null;
 
         _updateArguments.call(this);
@@ -28,6 +29,11 @@ var createModals = (function() {
                 target = document.querySelector(".js-" + targetClass + "Modal");
             if (target) {
                 target.classList.add("show");
+            }
+            if(target.classList.contains("js-bodyClose")) {
+                orderUtils.eventHandler(".js-background", "click", this.closeModal);
+            } else {
+                orderUtils.eventHandlerRemove(".js-background", "click", this.closeModal);
             }
         },
         closeModal: function(e) {
@@ -256,7 +262,7 @@ var createModals = (function() {
                 newModal.appendChild(_renderInfoHolder.call(this));
             }
 
-            if (this.default.placeHolder) {
+            if (this.default.bodyCloseModal) {
                 newModal.appendChild(_renderNewPlaceHolder.call(this));
             }
 
@@ -267,7 +273,9 @@ var createModals = (function() {
         } else {
             newModal.appendChild(_renderAllSteps.call(this));
         }
-
+        if (this.default.bodyCloseModal) {
+            newModal.classList.add("js-bodyClose");
+        }
         wrapper.appendChild(newModal);
         _initEvent.call(this);
     }

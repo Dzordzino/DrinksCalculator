@@ -28,6 +28,22 @@ var orderUtils = (function() {
                 });
             }
         },
+        eventHandlerRemove: function(objectData, eventName, functionTrigger) {
+            var array = "";
+            if (!Array.isArray(objectData)) {
+                array =
+                    document.querySelectorAll(objectData) !== null
+                        ? [].slice.call(document.querySelectorAll(objectData))
+                        : [];
+            } else {
+                array = objectData;
+            }
+            if (array.length !== 0) {
+                [].forEach.call(array, function(item) {
+                    item.removeEventListener(eventName, functionTrigger);
+                });
+            }
+        },
         renderElement: function(elementType, elementClass, innerText, elementAttributes) {
             var newElement = "";
             if (elementType) {

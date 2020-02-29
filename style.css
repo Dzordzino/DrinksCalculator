@@ -18,13 +18,15 @@ body {
   background: #000;
 }
 
-body .languageHolder {
+body .mainWrapper .languageHolder {
+  position: relative;
   width: auto;
   float: right;
   padding: 1rem;
+  z-index: 2;
 }
 
-body .languageHolder .languageButton {
+body .mainWrapper .languageHolder .languageButton {
   display: block;
   float: left;
   font-weight: bold;
@@ -34,7 +36,7 @@ body .languageHolder .languageButton {
   padding: 0.3rem;
 }
 
-body .backgroundHolder {
+body .mainWrapper .backgroundHolder {
   background: url(/images/background.jpg) center top no-repeat;
   position: absolute;
   top: 0;
@@ -43,15 +45,15 @@ body .backgroundHolder {
   height: 100%;
   -webkit-filter: blur(5px);
           filter: blur(5px);
-  z-index: -1;
+  z-index: 1;
   background-size: cover;
 }
 
-body input {
+body .mainWrapper input {
   outline: none;
 }
 
-body .mainHolder {
+body .mainWrapper .mainHolder {
   position: absolute;
   width: 90%;
   top: 50%;
@@ -62,9 +64,10 @@ body .mainHolder {
   border-radius: 1rem;
   padding: 1.5rem 0;
   max-width: 700px;
+  z-index: 2;
 }
 
-body .mainHolder h1 {
+body .mainWrapper .mainHolder h1 {
   text-align: center;
   text-transform: uppercase;
   padding: 1rem;
@@ -72,7 +75,7 @@ body .mainHolder h1 {
   color: #ad974f;
 }
 
-body .mainHolder .mainButton {
+body .mainWrapper .mainHolder .mainButton {
   width: 60%;
   margin: 0.5rem auto;
   padding: 0.7rem;
@@ -87,15 +90,15 @@ body .mainHolder .mainButton {
   cursor: pointer;
 }
 
-body .mainHolder .mainButton:active {
+body .mainWrapper .mainHolder .mainButton:active {
   background: #ad974f;
 }
 
-body .mainHolder .mainButton:disabled {
+body .mainWrapper .mainHolder .mainButton:disabled {
   opacity: 0.5;
 }
 
-body .modal {
+body .mainWrapper .modal {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -111,13 +114,14 @@ body .modal {
   padding: 2rem;
   overflow-y: hidden;
   max-width: 700px;
+  z-index: 3;
 }
 
-body .modal.show {
+body .mainWrapper .modal.show {
   margin: 0;
 }
 
-body .modal input {
+body .mainWrapper .modal input {
   width: 100%;
   border: 0;
   padding: 0.5rem;
@@ -125,14 +129,14 @@ body .modal input {
   font-size: 1rem;
 }
 
-body .modal .priceInput {
+body .mainWrapper .modal .priceInput {
   width: 46%;
   float: left;
   margin-top: 1rem;
   margin-right: 4%;
 }
 
-body .modal .modalButton {
+body .mainWrapper .modal .modalButton {
   margin-top: 1rem;
   width: 49%;
   padding: 0.5rem;
@@ -146,21 +150,21 @@ body .modal .modalButton {
   cursor: pointer;
 }
 
-body .modal .modalButton:active {
+body .mainWrapper .modal .modalButton:active {
   color: #ad974f;
   background: #fff;
 }
 
-body .modal .modalButton:disabled {
+body .mainWrapper .modal .modalButton:disabled {
   opacity: 0.5;
 }
 
-body .modal h2 {
+body .mainWrapper .modal h2 {
   text-align: left;
   color: #fff;
 }
 
-body .modal .drinksList {
+body .mainWrapper .modal .drinksList {
   padding: 0.5rem;
   background: #fff;
   border-radius: 10px;
@@ -168,7 +172,7 @@ body .modal .drinksList {
   overflow-y: scroll;
 }
 
-body .modal .drinksList.emptyContent:after {
+body .mainWrapper .modal .drinksList.emptyContent:after {
   display: block;
   content: var(--emptyText);
   text-align: left;
@@ -177,30 +181,30 @@ body .modal .drinksList.emptyContent:after {
   padding: 1rem;
 }
 
-body .modal .drinksList p {
+body .mainWrapper .modal .drinksList p {
   text-transform: capitalize;
   text-align: left;
   font-size: 1.2rem;
   cursor: pointer;
 }
 
-body .modal .drinksList p span {
+body .mainWrapper .modal .drinksList p span {
   float: right;
 }
 
-body .modal .placeHolder input {
+body .mainWrapper .modal .placeHolder input {
   width: 50%;
   float: left;
   margin-top: 18px;
   text-transform: capitalize;
 }
 
-body .modal .placeHolder button {
+body .mainWrapper .modal .placeHolder button {
   cursor: pointer;
   width: 45%;
 }
 
-body .modal .placeHolder .error {
+body .mainWrapper .modal .placeHolder .error {
   display: none;
   font-size: small;
   color: #000;
@@ -208,17 +212,17 @@ body .modal .placeHolder .error {
   font-weight: bold;
 }
 
-body .modal .placeHolder .error.show {
+body .mainWrapper .modal .placeHolder .error.show {
   display: block;
 }
 
-body .modal .buttonsHolder:after {
+body .mainWrapper .modal .buttonsHolder:after {
   display: block;
   content: "";
   clear: both;
 }
 
-body .modal .buttonsHolder .orderButton {
+body .mainWrapper .modal .buttonsHolder .orderButton {
   width: auto;
   float: left;
   margin: 5px;
@@ -231,18 +235,18 @@ body .modal .buttonsHolder .orderButton {
   cursor: pointer;
 }
 
-body .modal .buttonsHolder .orderButton span {
+body .mainWrapper .modal .buttonsHolder .orderButton span {
   display: none;
 }
 
-body .modal .orderPrice {
+body .mainWrapper .modal .orderPrice {
   float: left;
   width: 30%;
   margin-top: 1rem;
   text-align: center;
 }
 
-body .modal .totalPrice {
+body .mainWrapper .modal .totalPrice {
   margin-top: 1rem;
   width: 49%;
   margin-right: 1%;
@@ -251,24 +255,24 @@ body .modal .totalPrice {
   border-radius: 10px;
 }
 
-body .modal.receiptModal .stepPreview {
+body .mainWrapper .modal.receiptModal .stepPreview {
   overflow: hidden;
 }
 
-body .modal.receiptModal .stepPreview .stepHolder {
+body .mainWrapper .modal.receiptModal .stepPreview .stepHolder {
   width: 300%;
   margin-left: -100%;
   -webkit-transition-duration: 0.5s;
           transition-duration: 0.5s;
 }
 
-body .modal.receiptModal .stepPreview .stepHolder .singleStep {
+body .mainWrapper .modal.receiptModal .stepPreview .stepHolder .singleStep {
   width: 33.333333%;
   float: left;
   padding: 0 0.5rem;
 }
 
-body .modal.receiptModal .stepPreview .stepHolder:after {
+body .mainWrapper .modal.receiptModal .stepPreview .stepHolder:after {
   content: "";
   display: block;
   clear: both;

@@ -3,7 +3,8 @@
         {
             "modalClass": "js-loadModal",
             "listClass": "js-placesList js-itemList",
-            "closeButton": true
+            "closeButton": true,
+            "bodyCloseModal": true
         },
         {
             "modalClass": "js-roundsModal",
@@ -18,7 +19,8 @@
             "title": "Lista Stavki",
             "closeButton": true,
             "placeHolder": true,
-            "newDrinkIput": true
+            "newDrinkIput": true,
+            "bodyCloseModal": true
         },
         {
             "modalClass": "js-receiptModal receiptModal",
