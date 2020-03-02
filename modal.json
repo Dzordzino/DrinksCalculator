@@ -3,13 +3,13 @@
         {
             "modalClass": "js-loadModal",
             "listClass": "js-placesList js-itemList",
-            "closeButton": true,
+            "closeButton": ["js-closeModal modalButton close", "Zatvori prozor"],
             "bodyCloseModal": true
         },
         {
             "modalClass": "js-roundsModal",
             "listClass": "js-orderList js-itemList",
-            "closeButton": true,
+            "closeButton": ["js-closeModal modalButton close", "Zatvori prozor"],
             "buttonsHolder": true,
             "infoHolder": true
         },
@@ -17,15 +17,38 @@
             "modalClass": "js-drinksModal",
             "listClass": "js-drinksList js-itemList",
             "title": "Lista Stavki",
-            "closeButton": true,
+            "closeButton": ["js-closeModal modalButton close", "Zatvori prozor"],
             "placeHolder": true,
             "newDrinkIput": true,
             "bodyCloseModal": true
         },
         {
             "modalClass": "js-receiptModal receiptModal",
-            "closeButton": true,
-            "pagesNumber": 3
+            "pagesNumber": 3,
+            "step1": {
+                "title": "Ukupna kolicina",
+                "listClass": "js-sumInfo",
+                "totalPriceInput": false,
+                "backButton": ["js-backButton modalButton", "Natrag"],
+                "sumButton": false,
+                "closeButton": false
+            },
+            "step2": {
+                "title": "Ukupna kolicina",
+                "listClass": "js-receiptHolder js-itemList",
+                "totalPriceInput": true,
+                "backButton": false,
+                "sumButton": ["js-sumModal modalButton close", "Ukupna kolicina"],
+                "closeButton": ["js-closeModal modalButton close", "Zatvori prozor"]
+            },
+            "step3": {
+                "title": "Ukupna kolicina",
+                "listClass": "js-infoOrder",
+                "totalPriceInput": false,
+                "backButton": ["js-backButton modalButton", "Natrag"],
+                "sumButton": false,
+                "closeButton": false
+            }
         }
     ]
 }

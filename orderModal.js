@@ -2,7 +2,7 @@ var createModals = (function() {
     "use strict";
 
     function Modal() {
-        this.arguments = arguments[0];
+        this.arguments = "";
         this.default = {
             pagesNumber: 1,
             modalClass: "",
@@ -13,13 +13,13 @@ var createModals = (function() {
             placeHolder: false,
             newDrinkIput: false,
             title: "",
-            bodyCloseModal: false
+            bodyCloseModal: false,
+            backButton: false,
+            totalPriceInput: false,
+            sumButton: false,
         };
-        this.backgroundCloseButton = ""
-        this.closeButton = null;
 
-        _updateArguments.call(this);
-        _init.call(this);
+        _init.call(this, arguments[0])
     }
 
     Modal.prototype = {
@@ -36,7 +36,7 @@ var createModals = (function() {
                 orderUtils.eventHandlerRemove(".js-background", "click", this.closeModal);
             }
         },
-        closeModal: function(e) {
+        closeModal: function() {
             var target = document.querySelector(".show"),
                 targetList = target.querySelector(".js-itemList");
 
@@ -76,9 +76,7 @@ var createModals = (function() {
                 { name: "readonly", data: "readonly" },
                 { name: "value", data: 0 }
             ]),
-            saveButton = orderUtils.renderElement("button", "modalButton close js-submitRound", "Sacuvaj Turu", [
-                { name: "data-text", data: "Sacuvaj Turu" }
-            ]);
+            saveButton =  _renderButton.call(this, ["modalButton close js-submitRound", "Sacuvaj Turu"]);
 
         infoHolderElement.appendChild(infoInput);
         infoHolderElement.appendChild(saveButton);
@@ -98,9 +96,7 @@ var createModals = (function() {
                 { name: "placeholder", data: "Unesite cenu pica" },
                 { name: "data-placeholder", data: "Unesite cenu pica" }
             ]),
-            saveDrinkButton = orderUtils.renderElement("button", "js-enterDrink modalButton", "Unesi stavku", [
-                { name: "data-text", data: "Unesi stavku" }
-            ]);
+            saveDrinkButton =  _renderButton.call(this, ["js-enterDrink modalButton", "Unesi stavku"]);
 
         newDrinkElement.appendChild(drinkNameInput);
         newDrinkElement.appendChild(drinkPriceInput);
@@ -110,8 +106,9 @@ var createModals = (function() {
     }
 
     function _renderTitle() {
-        var modalTitle = orderUtils.renderElement("h2", "", "Lista Stavki", [
-            { name: "data-text", data: "Lista Stavki" }
+        var titleText = this.default.title,
+            modalTitle = orderUtils.renderElement("h2", "", titleText, [
+            { name: "data-text", data: titleText }
         ]);
 
         return modalTitle;
@@ -124,9 +121,7 @@ var createModals = (function() {
                 { name: "placeholder", data: "Naziv Mesta" },
                 { name: "data-placeholder", data: "Naziv Mesta" }
             ]),
-            savePlaceButton = orderUtils.renderElement("button", "js-savePlace modalButton close", "Sacuvaj", [
-                { name: "data-text", data: "Sacuvaj" }
-            ]),
+            savePlaceButton =  _renderButton.call(this, ["js-savePlace modalButton close", "Sacuvaj"]),
             errorText = orderUtils.renderElement(
                 "p",
                 "js-errorText error",
@@ -141,142 +136,100 @@ var createModals = (function() {
         return newPlaceElement;
     }
 
-    function _renderFirstStep() {
-        var firstStep = orderUtils.renderElement("div", "singleStep"),
-            firstStepTitle = orderUtils.renderElement("h2", "", "Ukupna kolicina", [
-                { name: "data-text", data: "Ukupna kolicina" }
-            ]),
-            firstStepList = orderUtils.renderElement("div", "drinksList js-sumInfo"),
-            firstStepButton = orderUtils.renderElement("button", "js-backButton modalButton", "Natrag", [
-                { name: "data-text", data: "Natrag" }
-            ]);
-
-        firstStep.appendChild(firstStepTitle);
-        firstStep.appendChild(firstStepList);
-        firstStep.appendChild(firstStepButton);
-
-        return firstStep;
-    }
-
-    function _renderSecondStep() {
-        var secondStep = orderUtils.renderElement("div", "singleStep"),
-            secondStepTitle = orderUtils.renderElement("h2", "", "Lista Tura", [
-                { name: "data-text", data: "Lista Tura" }
-            ]),
-            secondStepList = orderUtils.renderElement("div", "drinksList js-receiptHolder js-itemList"),
-            secondStepInput = orderUtils.renderElement("input", "js-totalPrice totalPrice", "", [
+    function _totalPriceInput() {
+        var totalSumClass = "js-totalPrice totalPrice",
+            totalSum = orderUtils.renderElement("input", totalSumClass, "", [
                 { name: "placeholder", data: 0 },
                 { name: "readonly", data: "readonly" }
-            ]),
-            secondStepSumButton = orderUtils.renderElement(
-                "button",
-                "js-sumModal modalButton close",
-                "Ukupna kolicina",
-                [{ name: "data-text", data: "Ukupna kolicina" }]
-            ),
-            secondStepButton = orderUtils.renderElement("button", "js-closeModal modalButton close", "Zatvori prozor", [
-                { name: "data-text", data: "Zatvori prozor" }
             ]);
 
-        secondStep.appendChild(secondStepTitle);
-        secondStep.appendChild(secondStepList);
-        secondStep.appendChild(secondStepInput);
-        secondStep.appendChild(secondStepSumButton);
-        secondStep.appendChild(secondStepButton);
-
-        return secondStep;
+        return totalSum;
     }
 
-    function _renderThirdStep() {
-        var thirdStep = orderUtils.renderElement("div", "singleStep"),
-            thirdStepTitle = orderUtils.renderElement("h2", "", "Ukupna kolicina", [
-                { name: "data-text", data: "Ukupna kolicina" }
-            ]),
-            thirdStepInfo = orderUtils.renderElement("div", "infoHolder"),
-            thirdStepList = orderUtils.renderElement("div", "js-infoOrder drinksList"),
-            thirdStepPriceInfo = orderUtils.renderElement("div", "js-infoPrice"),
-            thirdStepButton = orderUtils.renderElement("button", "js-backButton modalButton", " Natrag", [
-                { name: "data-text", data: " Natrag" }
+    function _renderButton(buttonElement) {
+        var buttonClass = buttonElement[0],
+            newButtonElement = orderUtils.renderElement("button", buttonClass, buttonElement[1], [
+                { name: "data-text", data: buttonElement[1] }
             ]);
 
-        thirdStep.appendChild(thirdStepTitle);
-        thirdStep.appendChild(thirdStepInfo);
-        thirdStep.appendChild(thirdStepList);
-        thirdStep.appendChild(thirdStepPriceInfo);
-        thirdStep.appendChild(thirdStepButton);
-
-        return thirdStep;
+        return newButtonElement;
     }
 
-    function _renderAllSteps() {
-        var allSteps = orderUtils.renderElement("div", "stepPreview"),
-            stepHolder = orderUtils.renderElement("div", "js-stepHolder stepHolder");
+    function _renderModal(newModal) {
 
-        stepHolder.appendChild(_renderFirstStep.call(this));
-        stepHolder.appendChild(_renderSecondStep.call(this));
-        stepHolder.appendChild(_renderThirdStep.call(this));
-        allSteps.appendChild(stepHolder);
+        if (this.default.buttonsHolder) {
+            newModal.appendChild(_renderButtonsHolder.call(this));
+        }
 
-        return allSteps;
-    }
+        if (this.default.newDrinkIput) {
+            newModal.appendChild(_renderNewDrinkInput.call(this));
+        }
 
-    function _renderCloseButton() {
-        var closeButton = "js-closeModal modalButton close",
-            closeButtonElement = orderUtils.renderElement("button", closeButton, "Zatvori prozor", [
-                { name: "data-text", data: "Zatvori prozor" }
-            ]);
+        if (this.default.title) {
+            newModal.appendChild(_renderTitle.call(this));
+        }
 
-        return closeButtonElement;
+        newModal.appendChild(_renderList.call(this));
+
+        if (this.default.infoHolder) {
+            newModal.appendChild(_renderInfoHolder.call(this));
+        }
+
+        if (this.default.placeHolder) {
+            newModal.appendChild(_renderNewPlaceHolder.call(this));
+        }
+        
+        if (this.default.totalPriceInput) {
+            newModal.appendChild(_totalPriceInput.call(this));
+        }
+        
+        if (this.default.sumButton) {
+            newModal.appendChild(_renderButton.call(this, this.default.sumButton));
+        }
+
+        if (this.default.backButton) {
+            newModal.appendChild(_renderButton.call(this, this.default.backButton));
+        }
+
+        if (this.default.closeButton) {
+            newModal.appendChild(_renderButton.call(this, this.default.closeButton));
+        }
+        
+        return newModal;
     }
 
     function _initEvent() {
-        if (this.closeButton) {
-            orderUtils.eventHandler(".js-closeModal", "click", this.closeModal);
-        }
+        orderUtils.eventHandler(".js-closeModal", "click", this.closeModal);
     }
-
-    function _init() {
+    
+    function _init(arg) {
         var wrapper = document.querySelector(".mainWrapper"),
-            newModal = "",
-            modalClasses = "";
-
-        modalClasses = this.default.modalClass + " modal";
-        newModal = orderUtils.renderElement("div", modalClasses);
-
-        if (this.default.pagesNumber === 1) {
-            if (this.default.buttonsHolder) {
-                newModal.appendChild(_renderButtonsHolder.call(this));
-            }
-
-            if (this.default.newDrinkIput) {
-                newModal.appendChild(_renderNewDrinkInput.call(this));
-            }
-
-            if (this.default.title) {
-                newModal.appendChild(_renderTitle.call(this));
-            }
-
-            newModal.appendChild(_renderList.call(this));
-
-            if (this.default.infoHolder) {
-                newModal.appendChild(_renderInfoHolder.call(this));
-            }
-
-            if (this.default.bodyCloseModal) {
-                newModal.appendChild(_renderNewPlaceHolder.call(this));
-            }
-
-            if (this.default.closeButton) {
-                this.closeButton = true;
-                newModal.appendChild(_renderCloseButton.call(this));
-            }
+            modalClasses = arg.modalClass + " modal",
+            newModalElement = orderUtils.renderElement("div", modalClasses),
+            allSteps = orderUtils.renderElement("div", "stepPreview"),
+            stepHolder = orderUtils.renderElement("div", "js-stepHolder stepHolder"),
+            singleStep = "";
+        
+        if (!arg.pagesNumber) {
+            this.arguments = arg;
+            _updateArguments.call(this);
+            newModalElement = _renderModal.call(this, newModalElement);
         } else {
-            newModal.appendChild(_renderAllSteps.call(this));
+            for(var i = 1; i <= arg.pagesNumber; i++) {
+                singleStep = orderUtils.renderElement("div", "singleStep");
+                this.arguments = arg["step" + i];
+                _updateArguments.call(this);
+                stepHolder.appendChild(_renderModal.call(this, singleStep));
+            }
+            allSteps.appendChild(stepHolder);
+            newModalElement.appendChild(allSteps);
         }
+        
         if (this.default.bodyCloseModal) {
-            newModal.classList.add("js-bodyClose");
+            newModalElement.classList.add("js-bodyClose");
         }
-        wrapper.appendChild(newModal);
+        
+        wrapper.appendChild(newModalElement);
         _initEvent.call(this);
     }
 
