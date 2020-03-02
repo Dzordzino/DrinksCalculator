@@ -25,11 +25,11 @@
             sumButton = document.querySelector(".js-sumModal"),
             submitButton = document.querySelector(".js-submitRound");
 
-        if (!listData.innerHTML) {
+        if (listData && !listData.innerHTML) {
             sumButton.setAttribute("disabled", true);
             submitButton.setAttribute("disabled", true);
             listData.classList.add("emptyContent");
-        } else {
+        } else if (listData){
             sumButton.removeAttribute("disabled");
             submitButton.removeAttribute("disabled");
             listData.classList.remove("emptyContent");
@@ -192,14 +192,10 @@
     }
 
     function resetData() {
-        var action = confirm(languageObject[language]["Obrisi podatke"]);
-
-        if (action) {
-            orderUtils.removeItem("drinks");
-            orderUtils.removeItem("orderId");
-            clearOrders();
-            window.location.reload();
-        }
+        orderUtils.removeItem("drinks");
+        orderUtils.removeItem("orderId");
+        clearOrders();
+        window.location.reload();
     }
 
     function savePlace() {

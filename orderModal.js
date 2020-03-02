@@ -6,6 +6,7 @@ var createModals = (function() {
         this.default = {
             pagesNumber: 1,
             modalClass: "",
+            renderList: true,
             listClass: "",
             closeButton: false,
             buttonsHolder: false,
@@ -17,6 +18,9 @@ var createModals = (function() {
             backButton: false,
             totalPriceInput: false,
             sumButton: false,
+            modalButton: false,
+            message: false,
+            resetAllButton: false
         };
 
         _init.call(this, arguments[0])
@@ -40,7 +44,7 @@ var createModals = (function() {
             var target = document.querySelector(".show"),
                 targetList = target.querySelector(".js-itemList");
 
-            if (targetList.classList.contains("js-orderList")) {
+            if (targetList && targetList.classList.contains("js-orderList")) {
                 targetList.innerHTML = "";
             }
             target.classList.remove("show");
@@ -76,7 +80,7 @@ var createModals = (function() {
                 { name: "readonly", data: "readonly" },
                 { name: "value", data: 0 }
             ]),
-            saveButton =  _renderButton.call(this, ["modalButton close js-submitRound", "Sacuvaj Turu"]);
+            saveButton =  _renderButton.call(this, {"class": "modalButton close js-submitRound", "data-text": "Sacuvaj Turu"});
 
         infoHolderElement.appendChild(infoInput);
         infoHolderElement.appendChild(saveButton);
@@ -96,7 +100,8 @@ var createModals = (function() {
                 { name: "placeholder", data: "Unesite cenu pica" },
                 { name: "data-placeholder", data: "Unesite cenu pica" }
             ]),
-            saveDrinkButton =  _renderButton.call(this, ["js-enterDrink modalButton", "Unesi stavku"]);
+            saveDrinkButton =  _renderButton.call(this, {"class": "js-enterDrink modalButton", "data-text": "Unesi stavku"});
+            
 
         newDrinkElement.appendChild(drinkNameInput);
         newDrinkElement.appendChild(drinkPriceInput);
@@ -113,6 +118,15 @@ var createModals = (function() {
 
         return modalTitle;
     }
+    
+    function _renderMessage() {
+        var messageText = this.default.message,
+            modalMessage = orderUtils.renderElement("p", "", messageText, [
+            { name: "data-text", data: messageText }
+        ]);
+
+        return modalMessage ;
+    }
 
     function _renderNewPlaceHolder() {
         var newPlaceElement = orderUtils.renderElement("div", "placeHolder"),
@@ -121,7 +135,8 @@ var createModals = (function() {
                 { name: "placeholder", data: "Naziv Mesta" },
                 { name: "data-placeholder", data: "Naziv Mesta" }
             ]),
-            savePlaceButton =  _renderButton.call(this, ["js-savePlace modalButton close", "Sacuvaj"]),
+            savePlaceButton =  _renderButton.call(this, {"class": "js-savePlace modalButton close", "data-text": "Sacuvaj"}),
+            
             errorText = orderUtils.renderElement(
                 "p",
                 "js-errorText error",
@@ -147,10 +162,15 @@ var createModals = (function() {
     }
 
     function _renderButton(buttonElement) {
-        var buttonClass = buttonElement[0],
-            newButtonElement = orderUtils.renderElement("button", buttonClass, buttonElement[1], [
-                { name: "data-text", data: buttonElement[1] }
-            ]);
+        var attributeArray = [],
+            buttonText = buttonElement["data-text"],
+            newButtonElement = "";
+            
+            for(var attribute in buttonElement) {
+                attributeArray.push({name: attribute, data: buttonElement[attribute]})
+            }
+            
+            newButtonElement = orderUtils.renderElement("button", "", buttonText, attributeArray);
 
         return newButtonElement;
     }
@@ -168,8 +188,10 @@ var createModals = (function() {
         if (this.default.title) {
             newModal.appendChild(_renderTitle.call(this));
         }
-
-        newModal.appendChild(_renderList.call(this));
+        
+        if(this.default.renderList) {
+            newModal.appendChild(_renderList.call(this));
+        }
 
         if (this.default.infoHolder) {
             newModal.appendChild(_renderInfoHolder.call(this));
@@ -183,12 +205,20 @@ var createModals = (function() {
             newModal.appendChild(_totalPriceInput.call(this));
         }
         
+        if(this.default.message) {
+            newModal.appendChild(_renderMessage.call(this));
+        }
+        
         if (this.default.sumButton) {
             newModal.appendChild(_renderButton.call(this, this.default.sumButton));
         }
 
         if (this.default.backButton) {
             newModal.appendChild(_renderButton.call(this, this.default.backButton));
+        }
+
+        if (this.default.resetAllButton) {
+            newModal.appendChild(_renderButton.call(this, this.default.resetAllButton));
         }
 
         if (this.default.closeButton) {
@@ -208,8 +238,10 @@ var createModals = (function() {
             newModalElement = orderUtils.renderElement("div", modalClasses),
             allSteps = orderUtils.renderElement("div", "stepPreview"),
             stepHolder = orderUtils.renderElement("div", "js-stepHolder stepHolder"),
-            singleStep = "";
-        
+            singleStep = "",
+            buttonsHolder = document.querySelector(".js-modalButtonHolder"),
+            renderModalButton = arg.modalButton;
+
         if (!arg.pagesNumber) {
             this.arguments = arg;
             _updateArguments.call(this);
@@ -225,10 +257,10 @@ var createModals = (function() {
             newModalElement.appendChild(allSteps);
         }
         
-        if (this.default.bodyCloseModal) {
-            newModalElement.classList.add("js-bodyClose");
-        }
-        
+        renderModalButton ? buttonsHolder.appendChild(_renderButton.call(this, renderModalButton)) : "";
+
+        this.default.bodyCloseModal ? newModalElement.classList.add("js-bodyClose") : "";
+
         wrapper.appendChild(newModalElement);
         _initEvent.call(this);
     }

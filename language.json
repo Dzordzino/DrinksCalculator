@@ -19,7 +19,8 @@
         "Natrag": "Back",
         "Lista Tura": "Rounds List",
         "Obrisi podatke": "Do you want to delete all data",
-        "Prazna lista": "Empty List..."
+        "Prazna lista": "Empty List...",
+        "Obrisi": "Remove data"
     },
     "rs": {
         "Koliko smo popili": "Koliko smo popili",
@@ -41,6 +42,7 @@
         "Natrag": "Natrag",
         "Lista Tura": "Lista Tura",
         "Obrisi podatke": "Da li zelite sve da obrisete sve podatke",
-        "Prazna lista": "Prazna lista..."
+        "Prazna lista": "Prazna lista...",
+        "Obrisi": "Obrisi podatke"
     }
 }
