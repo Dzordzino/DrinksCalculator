@@ -65,6 +65,7 @@ var createModals = (function() {
         * @param e - click event
         */
         openModal: function(e) {
+            self = this
             var targetClass = e.currentTarget.getAttribute("data-id"),
                 target = document.querySelector(".js-" + targetClass + "Modal");
 
