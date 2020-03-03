@@ -59,6 +59,8 @@
             }
             // render/remove text inside modal list if it's empty
             renderOverlay(showElement);
+            // disable buttons in background
+            disableButtonsToggle();
         }
     }
     /**
@@ -281,6 +283,8 @@
         
         loadPlaceName = e.currentTarget.innerHTML
         resetModal.classList.add("show");
+         // disable buttons in background
+         disableButtonsToggle()
     }
     //render place data
     function loadData() {
@@ -345,6 +349,8 @@
         orderUtils.removeItem("orders");
         if(resetOrderModal) {
             resetOrderModal.classList.remove("show");
+             // disable buttons in background
+             disableButtonsToggle()
         }
     }
     // show sum inside modal list
@@ -461,6 +467,17 @@
                 item.setAttribute("placeholder", languageObject[lang][itemPlaceholder]);
             }
         });
+    }
+     // toggle main hloder button disable
+    function disableButtonsToggle() {
+        var allButtons = document.querySelectorAll(".js-mainButton");
+        [].forEach.call(allButtons, function(item){
+            if(item.classList.contains("clickDisabled")) {
+                item.classList.remove("clickDisabled");  
+            } else {
+                item.classList.add("clickDisabled");  
+            }
+        })
     }
     // render app content
     function renderContent() {

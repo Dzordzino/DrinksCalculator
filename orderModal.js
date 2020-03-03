@@ -69,16 +69,21 @@ var createModals = (function() {
                 target = document.querySelector(".js-" + targetClass + "Modal");
 
             target ? target.classList.add("show") : "" ;
-            target.classList.contains("js-bodyClose") ? orderUtils.eventHandler("#tralala", "click", this.closeModal) : "";
+            target.classList.contains("js-bodyClose") ? orderUtils.eventHandler(".js-background", "click", this.closeModal) : "";
         },
         // Functionality for closing modal
         closeModal: function() {
             var target = document.querySelector(".show"),
-                targetList = target.querySelector(".js-itemList");
+                targetList = target.querySelector(".js-itemList"),
+                allButtons = document.querySelectorAll(".js-mainButton");;
 
             targetList && targetList.classList.contains("js-orderList") ? targetList.innerHTML = "" : "";
-            orderUtils.eventHandlerRemove("#tralala", "click", self.closeModal);
+            orderUtils.eventHandlerRemove(".js-background", "click", self.closeModal);
             target.classList.remove("show");
+
+            [].forEach.call(allButtons, function(item){
+                item.classList.remove("clickDisabled");
+            })
         }
     };
     // Functionality for updating default options with arguments

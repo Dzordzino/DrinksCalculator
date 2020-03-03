@@ -81,6 +81,10 @@ body {
                 &:disabled {
                     opacity: 0.5;
                 }
+                &.clickDisabled {
+                    pointer-events: none;
+                    opacity: 0.5;
+                }
             }
         }
         .modal {

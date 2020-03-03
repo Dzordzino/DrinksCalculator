@@ -98,6 +98,11 @@ body .mainWrapper .mainHolder .mainButton:disabled {
   opacity: 0.5;
 }
 
+body .mainWrapper .mainHolder .mainButton.clickDisabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 body .mainWrapper .modal {
   position: absolute;
   top: 50%;
