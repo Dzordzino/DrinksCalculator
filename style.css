@@ -121,6 +121,16 @@ body .mainWrapper .modal.show {
   margin: 0;
 }
 
+body .mainWrapper .modal.reset {
+  color: white;
+  font-weight: bold;
+}
+
+body .mainWrapper .modal.reset button {
+  width: 48%;
+  margin: 1rem 1% 0;
+}
+
 body .mainWrapper .modal input {
   width: 100%;
   border: 0;

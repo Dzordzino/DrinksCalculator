@@ -101,6 +101,14 @@ body {
             &.show {
                 margin: 0;
             }
+            &.reset {
+                color: white;
+                font-weight: bold;
+                button {
+                    width: 48%;
+                    margin:1rem 1% 0;
+                }
+            }
             input {
                 width: 100%;
                 border: 0;

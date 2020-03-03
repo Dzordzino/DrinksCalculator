@@ -55,12 +55,19 @@
             }
         },
         {
-            "modalClass": "js-resetModal",
-            "renderList": false,
+            "modalClass": "js-resetModal reset",
+            "listClass": false,
             "message": "Obrisi podatke",
             "closeButton": {"class": "js-closeModal modalButton close", "data-text":"Zatvori prozor"},
             "resetAllButton": {"class": "js-reset modalButton", "data-text":"Obrisi"},
-            "modalButton": {"class": "js-mainButton mainButton", "data-id": "reset", "data-text":"Ponisti Sve"}
+            "modalButton": {"class": "js-mainButton mainButton", "data-id": "reset", "data-text":"Ponisti sve"}
+        },
+        {
+            "modalClass": "js-orderResetModal reset",
+            "listClass": false,
+            "message": "Obrisi narudzbine poruka",
+            "closeButton": {"class": "js-closeModal modalButton close", "data-text":"Zatvori prozor"},
+            "resetAllButton": {"class": "js-resetOrders modalButton", "data-text":"Obrisi narudzbine"}
         }
     ]
 }

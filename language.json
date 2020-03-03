@@ -20,7 +20,10 @@
         "Lista Tura": "Rounds List",
         "Obrisi podatke": "Do you want to delete all data",
         "Prazna lista": "Empty List...",
-        "Obrisi": "Remove data"
+        "Obrisi": "Remove data",
+        "Obrisi narudzbine": "Remove all orders",
+        "Obrisi narudzbine poruka": "By loading place all saved order will be lost",
+        "Obavezna polja": "Drink price and name must be filled"
     },
     "rs": {
         "Koliko smo popili": "Koliko smo popili",
@@ -43,6 +46,9 @@
         "Lista Tura": "Lista Tura",
         "Obrisi podatke": "Da li zelite sve da obrisete sve podatke",
         "Prazna lista": "Prazna lista...",
-        "Obrisi": "Obrisi podatke"
+        "Obrisi": "Obrisi podatke",
+        "Obrisi narudzbine": "Obrisi sve narudzbine",
+        "Obrisi narudzbine poruka": "Ucitavanjem mesta obrisacete sve sacuvane porudzbine",
+        "Obavezna polja": "Polje cena i naziv pica moraju biti popunjeni"
     }
 }
