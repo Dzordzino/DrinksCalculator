@@ -7,7 +7,8 @@
         languageObject = "",
         showElement = "",
         loadPlaceName = "",
-        language = "";
+        language = "",
+        resetOrderModal = "";
     //add event listeners to the app elements
     function addEventListeners() {
         orderUtils.eventHandler(".js-enterDrink", "click", createDrink);
@@ -280,9 +281,16 @@
     */
     function loadPlace(e) {
         var resetModal = document.querySelector(".js-orderResetModal");
-        
         loadPlaceName = e.currentTarget.innerHTML
-        resetModal.classList.add("show");
+        if(resetModal === null) {
+            resetOrderModal = new createModals(
+                {
+                    "modalClass": "js-orderResetModal reset",
+                    "modalContent": '<p data-text="Obrisi narudzbine poruka">Ucitavanjem mesta obrisacete sve sacuvane porudzbine</p><button class="js-resetOrders modalButton" data-text="Obrisi narudzbine">Obrisi sve narudzbine</button>'
+                }
+            );
+        }
+        resetOrderModal.constructor.prototype.openModal(e);
          // disable buttons in background
          disableButtonsToggle()
     }
@@ -308,7 +316,7 @@
             placesList.innerHTML = "";
             loadButton.removeAttribute("disabled");
             [].forEach.call(allPlaces, function(item) {
-                placesList.innerHTML += '<p class="js-closeModal js-loadPlace" data-id="load">' + item + "</p>";
+                placesList.innerHTML += '<p class="js-closeModal js-loadPlace" data-id="orderReset">' + item + "</p>";
             });
         } else {
             // disable load places button if there aren't places in local storage
@@ -347,7 +355,7 @@
         }
         orderUtils.setItem("orderId", 0);
         orderUtils.removeItem("orders");
-        if(resetOrderModal) {
+        if(resetOrderModal.classList.contains("show")) {
             resetOrderModal.classList.remove("show");
              // disable buttons in background
              disableButtonsToggle()
@@ -481,26 +489,50 @@
     }
     // render app content
     function renderContent() {
-        var allModals = new XMLHttpRequest(),
-            modalArray = "";
-        // get all modal objects
-        allModals.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                modalArray = JSON.parse(this.responseText);
-                // create each modal based on data repsonse
-                [].forEach.call(modalArray.modals, function(item) {
-                    new createModals(item);
-                });
-                // update global variables
-                drinksList = document.querySelector(".js-drinksList");
-                orderList = document.querySelector(".js-orderList");
-                totalPrice = document.querySelector(".js-roundPrice");
-                renderLoad();
-                addEventListeners();
+        // create modals
+        new createModals(
+            {
+                "modalClass": "js-loadModal",
+                "bodyCloseModal": true,
+                "modalContent": '<div class="drinksList js-placesList js-itemList"></div>'
             }
-        };
-        allModals.open("GET", pageUrl + "/modal.json", true);
-        allModals.send();
+        );
+        
+        new createModals(
+            {
+                "modalClass": "js-roundsModal",
+                "modalContent": '<div class="js-buttonsHolder buttonsHolder"></div><div class="drinksList js-orderList js-itemList"></div><div class="infoHolder"><input class="js-roundPrice orderPrice" type="text" readonly="readonly" value="0"><button class="modalButton close js-submitRound" data-text="Sacuvaj Turu">Sacuvaj Turu</button></div>'
+            }
+        );
+        
+        new createModals(
+            {
+                "modalClass": "js-receiptModal receiptModal",
+                "modalContent": '<div class="stepPreview"><div class="js-stepHolder stepHolder"><div class="singleStep"><h2 data-text="Ukupna kolicina">Ukupna kolicina</h2><div class="drinksList js-sumInfo"></div><button class="js-backButton modalButton" data-text="Natrag">Natrag</button></div><div class="singleStep"><h2 data-text="Ukupna kolicina">Ukupna kolicina</h2><div class="drinksList js-receiptHolder js-itemList"></div><input class="js-totalPrice totalPrice" placeholder="0" readonly="readonly"><button class="js-sumModal modalButton close" data-text="Ukupna kolicina">Ukupna kolicina</button></div><div class="singleStep"><h2 data-text="Ukupna kolicina">Ukupna kolicina</h2><div class="drinksList js-infoOrder"></div><button class="js-backButton modalButton" data-text="Natrag">Natrag</button></div></div></div>'
+            }
+        );
+        
+        new createModals(
+            {
+                "modalClass": "js-drinksModal",
+                "bodyCloseModal": true,
+                "modalContent": '<div class="newDrinkiInput"><input class="js-drinksInput" type="text" placeholder="Unesite naziv pica" data-placeholder="Unesite naziv pica"><input class="js-priceInput priceInput" type="number" placeholder="Unesite cenu pica" data-placeholder="Unesite cenu pica"><button class="js-enterDrink modalButton" data-text="Unesi stavku">Unesi stavku</button></div><h2 data-text="Lista Stavki">Lista Stavki</h2><div class="drinksList js-drinksList js-itemList"></div><div class="placeHolder"><input class="js-placeName" type="text" placeholder="Naziv Mesta" data-placeholder="Naziv Mesta"><button class="js-savePlace modalButton close" data-text="Sacuvaj">Sacuvaj</button><p class="js-errorText error" data-text="Popuni mesta">Naziv mesta / Lista stavki moraju biti popunjeni</p></div>'
+            }
+        );
+        
+        new createModals(
+            {
+                "modalClass": "js-resetModal reset",
+                "modalContent": '<p data-text="Obrisi podatke">Da li zelite sve da obrisete sve podatke</p><button class="js-reset modalButton" data-text="Obrisi">Obrisi podatke</button>'
+            }
+        );
+
+        // update global variables
+        drinksList = document.querySelector(".js-drinksList");
+        orderList = document.querySelector(".js-orderList");
+        totalPrice = document.querySelector(".js-roundPrice");
+        renderLoad();
+        addEventListeners();
     }
 
     return renderContent();
