@@ -43,7 +43,6 @@ var createModals = (function() {
         openModal: function(e) {
             var targetClass = e.currentTarget.getAttribute("data-id"),
                 target = document.querySelector(".js-" + targetClass + "Modal");
-            console.log(target)
             target ? target.classList.add("show") : "" ;
             if(target.classList.contains("js-bodyClose")) {
                 orderUtils.eventHandler(".js-background", "click", this.closeModal);
