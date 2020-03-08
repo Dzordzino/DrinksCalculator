@@ -352,14 +352,14 @@
     // clear all orders from local storage
     function clearOrders() {
         var allOrders = Number(orderUtils.getItem("orderId", 0)),
-            resetOrderModal = document.querySelector(".js-orderResetModal");
+            resetOrderModal = document.querySelector(".show");
 
         for (var i = 1; i <= allOrders; i++) {
             orderUtils.removeItem("order" + i);
         }
         orderUtils.setItem("orderId", 0);
         orderUtils.removeItem("orders");
-        if(resetOrderModal.classList.contains("show")) {
+        if(resetOrderModal) {
             resetOrderModal.classList.remove("show");
              // disable buttons in background
              disableButtonsToggle()
