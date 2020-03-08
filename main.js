@@ -16,7 +16,6 @@
         orderUtils.eventHandler(".js-reset", "click", resetData);
         orderUtils.eventHandler(".js-savePlace", "click", savePlace);
         orderUtils.eventHandler(".js-loadPlace", "click", loadPlace);
-        orderUtils.eventHandler(".js-resetOrders", "click", loadData);
         orderUtils.eventHandler(".js-sumModal", "click", showSum);
         orderUtils.eventHandler(".js-mainButton", "click", modalShow);
         orderUtils.eventHandler(".js-backButton", "click", stepBack);
@@ -78,10 +77,10 @@
             drinkCreated = e.currentTarget,
             errorText = document.querySelector(".js-errorText");
         // render error message
-        errorText.innerHTML = languageObject[language]["Obavezna polja"];
+        errorText.textContent = languageObject[language]["Obavezna polja"];
         errorText.setAttribute("data-text", "Obavezna polja");
         // render new drink if value and price aren't empty
-        if (inputValue && price.value) {
+        if (inputValue && price.value && orderUtils.checkHTML(inputValue)) {
             singleDrink = '<p class="js-orderItem js-drinkOrdered orderButton">' +
                 inputValue + "<span>" + price.value + "</span></p>";
             drinksList.innerHTML += singleDrink;
@@ -106,7 +105,7 @@
 
         modalButtonsHolder.innerHTML = "";
         // render drinks inside oreder modal buttons holder if drink item from local storage isn't empty
-        if (addedDrinksArray) {
+        if (addedDrinksArray && orderUtils.checkHTML(addedDrinksArray)) {
             modalButtonsHolder.innerHTML += addedDrinksArray;
         }
         // add event listeners to all drinks inside modal list
@@ -123,14 +122,16 @@
             drinkPrice = Number(singleDrink.querySelector("span").innerHTML),
             listItems = [];
 
-        orderList.innerHTML += singleDrink.outerHTML;
-        newPrice = priceValue + drinkPrice;
-        totalPrice.value = newPrice;
-        listItems = [].slice.call(orderList.children);
-        // render/remove text inside modal list if it's empty
-        renderOverlay(singleDrink.parentElement.parentElement);
-        // add event listeners to all drinks inside order modal list
-        orderUtils.eventHandler(listItems, "click", removeDrink);
+        if(orderUtils.checkHTML(singleDrink.outerHTML)) {
+            orderList.innerHTML += singleDrink.outerHTML;
+            newPrice = priceValue + drinkPrice;
+            totalPrice.value = newPrice;
+            listItems = [].slice.call(orderList.children);
+            // render/remove text inside modal list if it's empty
+            renderOverlay(singleDrink.parentElement.parentElement);
+            // add event listeners to all drinks inside order modal list
+            orderUtils.eventHandler(listItems, "click", removeDrink);
+        }
     }
     /**
     * create new round
@@ -178,7 +179,7 @@
             info = item.split("&");
             if (info.length > 1) {
                 receiptHolder.innerHTML += '<p class="js-listItem js-orderInfo" data-id="' +
-                    info[0] + '">' + info[0] + "<span>" + info[1] + "/" + info[2] + "</span></p>";
+                    info[0].toString() + '">' + info[0].toString() + "<span>" + info[1].toString() + "/" + info[2].toString() + "</span></p>";
                 tatalValue = tatalValue + Number(info[2]);
             }
         });
@@ -225,7 +226,9 @@
         document.querySelector(".js-stepHolder").style.marginLeft = "-200%";
         // add new data to the order list
         [].forEach.call(orderInfo, function(item) {
-            orderHolder.innerHTML += item;
+            if(orderUtils.checkHTML(item)){
+                orderHolder.innerHTML += item;
+            }
         });
     }
     // back to th previous modal
@@ -249,7 +252,7 @@
             errorText = document.querySelector(".js-errorText"),
             allItems = [].slice.call(drinksList.children);
         // render error message
-        errorText.innerHTML = languageObject[language]["Popuni mesta"];
+        errorText.textContent = languageObject[language]["Popuni mesta"];
         errorText.setAttribute("data-text", "Popuni mesta");
         // generate new place drink list
         drinkList = allItems.map(function(item) {
@@ -281,7 +284,7 @@
     */
     function loadPlace(e) {
         var resetModal = document.querySelector(".js-orderResetModal");
-        loadPlaceName = e.currentTarget.innerHTML
+        loadPlaceName = e.currentTarget.textContent;
         if(resetModal === null) {
             resetOrderModal = new createModals(
                 {
@@ -289,6 +292,7 @@
                     "modalContent": '<p data-text="Obrisi narudzbine poruka">Ucitavanjem mesta obrisacete sve sacuvane porudzbine</p><button class="js-resetOrders modalButton" data-text="Obrisi narudzbine">Obrisi sve narudzbine</button>'
                 }
             );
+            orderUtils.eventHandler(".js-resetOrders", "click", loadData);
         }
         resetOrderModal.constructor.prototype.openModal(e);
          // disable buttons in background
@@ -316,7 +320,7 @@
             placesList.innerHTML = "";
             loadButton.removeAttribute("disabled");
             [].forEach.call(allPlaces, function(item) {
-                placesList.innerHTML += '<p class="js-closeModal js-loadPlace" data-id="orderReset">' + item + "</p>";
+                placesList.innerHTML += '<p class="js-closeModal js-loadPlace" data-id="orderReset">' + item.toString() + "</p>";
             });
         } else {
             // disable load places button if there aren't places in local storage
@@ -336,7 +340,7 @@
             listItems = "";
         // render place drinks data
         [].forEach.call(drinks, function(item) {
-            drinksList.innerHTML += item;
+            drinksList.innerHTML += item.toString();
         });
         listItems = [].slice.call(drinksList.children);
         document.querySelector(".js-placeName").value = placeName;
@@ -417,7 +421,7 @@
         [].forEach.call(drinksArray, function(item) {
             singleItemValue = completeSum[item];
             singleItem = item.match("<s*p[^>]*>(.*?)<s*/s*p>");
-            sumHolder.innerHTML += '<p class="orderButton">' + singleItem[1] + "<span>" + singleItemValue + "</span></p>";
+            sumHolder.innerHTML += '<p class="orderButton">' + singleItem[1].toString() + "<span>" + singleItemValue.toString() + "</span></p>";
         });
     }
     // get language data
@@ -465,14 +469,14 @@
         [].forEach.call(languageVariables, function(item) {
             itemText = item.getAttribute("data-text");
             if (itemText && languageObject[lang][itemText]) {
-                item.innerHTML = languageObject[lang][itemText];
+                item.textContent = languageObject[lang][itemText];
             }
         });
 
         [].forEach.call(placeholderVariables, function(item) {
             itemPlaceholder = item.getAttribute("data-placeholder");
             if (itemPlaceholder && languageObject[lang][itemPlaceholder]) {
-                item.setAttribute("placeholder", languageObject[lang][itemPlaceholder]);
+                item.setAttribute("placeholder", languageObject[lang][itemPlaceholder].toString());
             }
         });
     }

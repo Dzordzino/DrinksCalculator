@@ -54,7 +54,9 @@ var createModals = (function() {
                 targetList = target.querySelector(".js-itemList"),
                 allButtons = document.querySelectorAll(".js-mainButton");;
 
-            targetList && targetList.classList.contains("js-orderList") ? targetList.innerHTML = "" : "";
+            if(targetList && targetList.classList.contains("js-orderList")) {
+                targetList.innerHTML = "";
+            }
             orderUtils.eventHandlerRemove(".js-background", "click", self.closeModal);
             target.classList.remove("show");
 
@@ -105,7 +107,7 @@ var createModals = (function() {
         this.arguments = arg;
         _updateArguments.call(this);
         // add content to the modal
-        if(this.default.modalContent) {
+        if(this.default.modalContent && orderUtils.checkHTML(this.default.modalContent)) {
             newModalElement.innerHTML = this.default.modalContent;
         }
         // add close button to the modal
