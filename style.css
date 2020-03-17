@@ -207,6 +207,11 @@ body .mainWrapper .modal .drinksList p span {
   float: right;
 }
 
+body .mainWrapper .modal .drinksList p span.orderText {
+  float: left;
+  margin-right: 5px;
+}
+
 body .mainWrapper .modal .placeHolder input {
   width: 50%;
   float: left;

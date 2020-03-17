@@ -172,6 +172,10 @@ body {
                     span {
                         float: right;
                     }
+                    span.orderText {
+                        float: left;
+                        margin-right: 5px;
+                    }
                 }
             }
             .placeHolder {

@@ -23,7 +23,8 @@
         "Obrisi": "Remove data",
         "Obrisi narudzbine": "Remove all orders",
         "Obrisi narudzbine poruka": "By loading place all saved order will be lost",
-        "Obavezna polja": "Drink price and name must be filled"
+        "Obavezna polja": "Drink price and name must be filled",
+        "Porudzbina": "Order"
     },
     "rs": {
         "Koliko smo popili": "Koliko smo popili",
@@ -49,6 +50,7 @@
         "Obrisi": "Obrisi podatke",
         "Obrisi narudzbine": "Obrisi sve narudzbine",
         "Obrisi narudzbine poruka": "Ucitavanjem mesta obrisacete sve sacuvane porudzbine",
-        "Obavezna polja": "Polje cena i naziv pica moraju biti popunjeni"
+        "Obavezna polja": "Polje cena i naziv pica moraju biti popunjeni",
+        "Porudzbina": "Porudzbina"
     }
 }

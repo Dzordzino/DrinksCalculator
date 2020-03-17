@@ -44,7 +44,7 @@ var createModals = (function() {
             var targetClass = e.currentTarget.getAttribute("data-id"),
                 target = document.querySelector(".js-" + targetClass + "Modal");
             target ? target.classList.add("show") : "" ;
-            if(target.classList.contains("js-bodyClose")) {
+            if (target.classList.contains("js-bodyClose")) {
                 orderUtils.eventHandler(".js-background", "click", this.closeModal);
             }
         },
@@ -54,7 +54,7 @@ var createModals = (function() {
                 targetList = target.querySelector(".js-itemList"),
                 allButtons = document.querySelectorAll(".js-mainButton");;
 
-            if(targetList && targetList.classList.contains("js-orderList")) {
+            if (targetList && targetList.classList.contains("js-orderList")) {
                 targetList.innerHTML = "";
             }
             orderUtils.eventHandlerRemove(".js-background", "click", self.closeModal);
@@ -107,11 +107,11 @@ var createModals = (function() {
         this.arguments = arg;
         _updateArguments.call(this);
         // add content to the modal
-        if(this.default.modalContent && orderUtils.checkHTML(this.default.modalContent)) {
+        if (this.default.modalContent && orderUtils.checkHTML(this.default.modalContent)) {
             newModalElement.innerHTML = this.default.modalContent;
         }
         // add close button to the modal
-        if(this.default.closeButton) {
+        if (this.default.closeButton) {
             newModalElement.appendChild(_renderButton.call(this, {"class": "js-closeModal modalButton close", "data-text":"Zatvori prozor"}))
         }
         // condition for adding close modal functionality to the background

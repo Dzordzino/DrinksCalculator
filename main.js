@@ -89,7 +89,7 @@
             input.value = "";
             price.value = "";
             errorText.classList.remove("show");
-        }else {
+        } else {
             errorText.classList.add("show");
         }
         listItems = [].slice.call(drinksList.children);
@@ -122,7 +122,7 @@
             drinkPrice = Number(singleDrink.querySelector("span").innerHTML),
             listItems = [];
 
-        if(orderUtils.checkHTML(singleDrink.outerHTML)) {
+        if (orderUtils.checkHTML(singleDrink.outerHTML)) {
             orderList.innerHTML += singleDrink.outerHTML;
             newPrice = priceValue + drinkPrice;
             totalPrice.value = newPrice;
@@ -141,11 +141,12 @@
         var roundTotal = totalPrice.value,
             order = [].slice.call(orderList.children),
             singleOrder = "",
-            hours = new Date().getHours() > 9 ? new Date().getHours() : 0 + new Date().getHours(),
-            minutes = new Date().getMinutes() > 9 ? new Date().getMinutes() : 0 + new Date().getMinutes(),
+            hours = new Date().getHours() > 9 ? new Date().getHours() : "0" + new Date().getHours(),
+            minutes = new Date().getMinutes() > 9 ? new Date().getMinutes() : "0" + new Date().getMinutes(),
             time = hours + ":" + minutes,
             allOrders = orderUtils.getItem("orders", []),
             orderId = orderUtils.getItem("orderId", 0);
+            console.log(new Date().getMinutes())
         // create new order
         singleOrder = order.map(function(item) {
             return item.outerHTML;
@@ -165,21 +166,42 @@
             createModals.prototype.closeModal(e);
         }
     }
+    /**
+    * separates order text from index
+    * @param orderName - order name
+    */
+    function splitOrderName(orderName) {
+        var numReg = /[+-]?\d+(?:\.\d+)?/g,
+            number = numReg.exec(orderName),
+            numberToSlice = "",
+            orderText = "";
+
+        if (number) {
+            numberToSlice = orderName.indexOf(number)
+            orderText = orderName.substr(0, numberToSlice)
+            return [orderText, number]
+        };
+
+        return 
+    }
     // render receipts inside modal list
     function renderReceipts() {
         var allOrders = orderUtils.getItem("orders", []),
             info = "",
             tatalValue = 0,
             receiptHolder = document.querySelector(".js-receiptHolder"),
-            totalPrice = document.querySelector(".js-totalPrice");
+            totalPrice = document.querySelector(".js-totalPrice"),
+            orderNameData = "";
 
         receiptHolder.innerHTML = "";
         // render all receipts
         [].forEach.call(allOrders, function(item) {
             info = item.split("&");
             if (info.length > 1) {
+                //split name into sting and number
+                orderNameData = splitOrderName(info[0]);
                 receiptHolder.innerHTML += '<p class="js-listItem js-orderInfo" data-id="' +
-                    info[0].toString() + '">' + info[0].toString() + "<span>" + info[1].toString() + "/" + info[2].toString() + "</span></p>";
+                    info[0] + '"><span class="orderText" data-text="Porudzbina">' + languageObject[language]["Porudzbina"] + "</span>" + orderNameData[1] + "<span>" + info[1] + "/" + info[2] + "</span></p>";
                 tatalValue = tatalValue + Number(info[2]);
             }
         });
@@ -226,7 +248,7 @@
         document.querySelector(".js-stepHolder").style.marginLeft = "-200%";
         // add new data to the order list
         [].forEach.call(orderInfo, function(item) {
-            if(orderUtils.checkHTML(item)){
+            if (orderUtils.checkHTML(item)) {
                 orderHolder.innerHTML += item;
             }
         });
@@ -285,7 +307,7 @@
     function loadPlace(e) {
         var resetModal = document.querySelector(".js-orderResetModal");
         loadPlaceName = e.currentTarget.textContent;
-        if(resetModal === null) {
+        if (resetModal === null) {
             resetOrderModal = new createModals(
                 {
                     "modalClass": "js-orderResetModal reset",
@@ -320,7 +342,7 @@
             placesList.innerHTML = "";
             loadButton.removeAttribute("disabled");
             [].forEach.call(allPlaces, function(item) {
-                placesList.innerHTML += '<p class="js-closeModal js-loadPlace" data-id="orderReset">' + item.toString() + "</p>";
+                placesList.innerHTML += '<p class="js-closeModal js-loadPlace" data-id="orderReset">' + item + "</p>";
             });
         } else {
             // disable load places button if there aren't places in local storage
@@ -340,7 +362,7 @@
             listItems = "";
         // render place drinks data
         [].forEach.call(drinks, function(item) {
-            drinksList.innerHTML += item.toString();
+            drinksList.innerHTML += item;
         });
         listItems = [].slice.call(drinksList.children);
         document.querySelector(".js-placeName").value = placeName;
@@ -359,7 +381,7 @@
         }
         orderUtils.setItem("orderId", 0);
         orderUtils.removeItem("orders");
-        if(resetOrderModal) {
+        if (resetOrderModal) {
             resetOrderModal.classList.remove("show");
              // disable buttons in background
              disableButtonsToggle()
@@ -421,7 +443,7 @@
         [].forEach.call(drinksArray, function(item) {
             singleItemValue = completeSum[item];
             singleItem = item.match("<s*p[^>]*>(.*?)<s*/s*p>");
-            sumHolder.innerHTML += '<p class="orderButton">' + singleItem[1].toString() + "<span>" + singleItemValue.toString() + "</span></p>";
+            sumHolder.innerHTML += '<p class="orderButton">' + singleItem[1] + "<span>" + singleItemValue + "</span></p>";
         });
     }
     // get language data
@@ -484,7 +506,7 @@
     function disableButtonsToggle() {
         var allButtons = document.querySelectorAll(".js-mainButton");
         [].forEach.call(allButtons, function(item){
-            if(item.classList.contains("clickDisabled")) {
+            if (item.classList.contains("clickDisabled")) {
                 item.classList.remove("clickDisabled");  
             } else {
                 item.classList.add("clickDisabled");  
