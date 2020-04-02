@@ -9,6 +9,8 @@
         loadPlaceName = "",
         language = "",
         resetOrderModal = "";
+        splitBillModal = "";
+        billValue = "";
     //add event listeners to the app elements
     function addEventListeners() {
         orderUtils.eventHandler(".js-enterDrink", "click", createDrink);
@@ -20,6 +22,7 @@
         orderUtils.eventHandler(".js-mainButton", "click", modalShow);
         orderUtils.eventHandler(".js-backButton", "click", stepBack);
         orderUtils.eventHandler(".js-languageChange ", "click", languageChange);
+        orderUtils.eventHandler(".js-splitModal ", "click", toggleSplitModal);
     }
     /**
     * render/remove text inside list if it's empty
@@ -188,7 +191,7 @@
     function renderReceipts() {
         var allOrders = orderUtils.getItem("orders", []),
             info = "",
-            tatalValue = 0,
+            totalValue = 0,
             receiptHolder = document.querySelector(".js-receiptHolder"),
             totalPrice = document.querySelector(".js-totalPrice"),
             orderNameData = "";
@@ -202,13 +205,18 @@
                 orderNameData = splitOrderName(info[0]);
                 receiptHolder.innerHTML += '<p class="js-listItem js-orderInfo" data-id="' +
                     info[0] + '"><span class="orderText" data-text="Porudzbina">' + languageObject[language]["Porudzbina"] + "</span>" + orderNameData[1] + "<span>" + info[1] + "/" + info[2] + "</span></p>";
-                tatalValue = tatalValue + Number(info[2]);
+                totalValue = totalValue + Number(info[2]);
             }
         });
         // render tatal price
-        totalPrice.value = tatalValue;
+        totalPrice.value = totalValue;
         // add event listeners to evry order item
         orderUtils.eventHandler(".js-orderInfo", "click", showDetails);
+        if(totalValue > 0){
+            billValue = totalValue
+            document.querySelector(".js-splitModal").removeAttribute("disabled");
+            createSplitModal()
+        }
     }
     /**
     * remove drink from the list
@@ -446,6 +454,46 @@
             sumHolder.innerHTML += '<p class="orderButton">' + singleItem[1] + "<span>" + singleItemValue + "</span></p>";
         });
     }
+    //function that splits tabs depending of person number
+    function splitTabPerPerson() {
+        var personNumber = document.querySelector(".js-peopleCount"),
+            singleBill = document.querySelector(".js-singleTabBill");
+
+        if (personNumber.value) {
+            singleBill.innerText = Math.round(billValue / personNumber.value) + " din";
+        } else {
+            singleBill.innerText = "0"
+        }
+    }
+    //show/hide split bill modal
+    function toggleSplitModal(e) {
+        var splitModal = document.querySelector(".js-splitBillModal"),
+            parentModal = document.querySelector(".js-receiptModal");
+
+        if (splitModal.classList.contains("show")) {
+            splitModal.classList.remove("show");
+            parentModal.classList.remove("hide");
+        } else {
+            document.querySelector(".js-tabBill").innerText = billValue + " din";
+            splitBillModal.constructor.prototype.openModal(e);
+            parentModal.classList.add("hide");
+        }
+    }
+    //render split modal
+    function createSplitModal() {
+        var splitModal = document.querySelector(".js-splitBillModal");
+        if (splitModal === null) {
+            splitBillModal = new createModals(
+                {
+                    "modalClass": "js-splitBillModal billModal",
+                    "closeButton": false,
+                    "modalContent": '<h2 data-text="Podeli racun">Podeli racun</h2><p data-text="Iznos racuna">Iznos racuna</p><p class="js-tabBill tabBill"></p><p  data-text="Broj osoba">Unesite broj osoba</p><input class="js-peopleCount tabBill" type="number"><p data-text="Iznos po osobi">Iznos po osobi</p><p class="js-singleTabBill tabBill">0</p><button class="js-closeSplitModal modalButton" data-text="Natrag">Natrag</button'
+                }
+            );
+            orderUtils.eventHandler(".js-closeSplitModal", "click", toggleSplitModal);
+            orderUtils.eventHandler(".js-peopleCount", "keyup", splitTabPerPerson);
+        }
+    }
     // get language data
     function getLanguage() {
         var appLang = orderUtils.getItem("lang", "rs"),
@@ -534,7 +582,7 @@
         new createModals(
             {
                 "modalClass": "js-receiptModal receiptModal",
-                "modalContent": '<div class="stepPreview"><div class="js-stepHolder stepHolder"><div class="singleStep"><h2 data-text="Ukupna kolicina">Ukupna kolicina</h2><div class="drinksList js-sumInfo"></div><button class="js-backButton modalButton" data-text="Natrag">Natrag</button></div><div class="singleStep"><h2 data-text="Ukupna kolicina">Ukupna kolicina</h2><div class="drinksList js-receiptHolder js-itemList"></div><input class="js-totalPrice totalPrice" placeholder="0" readonly="readonly"><button class="js-sumModal modalButton close" data-text="Ukupna kolicina">Ukupna kolicina</button></div><div class="singleStep"><h2 data-text="Ukupna kolicina">Ukupna kolicina</h2><div class="drinksList js-infoOrder"></div><button class="js-backButton modalButton" data-text="Natrag">Natrag</button></div></div></div>'
+                "modalContent": '<div class="stepPreview"><div class="js-stepHolder stepHolder"><div class="singleStep"><h2 data-text="Ukupna kolicina">Ukupna kolicina</h2><div class="drinksList js-sumInfo"></div><button class="js-backButton modalButton" data-text="Natrag">Natrag</button></div><div class="singleStep"><h2 data-text="Ukupna kolicina">Ukupna kolicina</h2><div class="drinksList js-receiptHolder js-itemList"></div><p class="billText" data-text="Iznos racuna">Iznos racuna</p><input class="js-totalPrice totalPrice" placeholder="0" readonly="readonly"><button class="js-sumModal modalButton close" data-text="Ukupna kolicina">Ukupna kolicina</button><button class="js-splitModal modalButton splitButton" data-text="Podeli racun" data-id="splitBill" disabled="disabled">Podeli racun</button></div><div class="singleStep"><h2 data-text="Ukupna kolicina">Ukupna kolicina</h2><div class="drinksList js-infoOrder"></div><button class="js-backButton modalButton" data-text="Natrag">Natrag</button></div></div></div>'
             }
         );
         

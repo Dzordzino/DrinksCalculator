@@ -24,7 +24,11 @@
         "Obrisi narudzbine": "Remove all orders",
         "Obrisi narudzbine poruka": "By loading place all saved order will be lost",
         "Obavezna polja": "Drink price and name must be filled",
-        "Porudzbina": "Order"
+        "Porudzbina": "Order",
+        "Iznos racuna": "Bill",
+        "Podeli racun": "Split tab",
+        "Iznos po osobi": "Amount per person",
+        "Broj osoba": "Enter number of persons"
     },
     "rs": {
         "Koliko smo popili": "Koliko smo popili",
@@ -51,6 +55,10 @@
         "Obrisi narudzbine": "Obrisi sve narudzbine",
         "Obrisi narudzbine poruka": "Ucitavanjem mesta obrisacete sve sacuvane porudzbine",
         "Obavezna polja": "Polje cena i naziv pica moraju biti popunjeni",
-        "Porudzbina": "Porudzbina"
+        "Porudzbina": "Porudzbina",
+        "Iznos racuna": "Iznos racuna",
+        "Podeli racun": "Podeli racun",
+        "Iznos po osobi": "Iznos po osobi",
+        "Broj osoba": "Unesite broj osoba"
     }
 }

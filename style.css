@@ -122,6 +122,12 @@ body .mainWrapper .modal {
   z-index: 3;
 }
 
+@media only screen and (max-width: 400px) {
+  body .mainWrapper .modal {
+    width: 100%;
+  }
+}
+
 body .mainWrapper .modal.show {
   margin: 0;
 }
@@ -172,6 +178,10 @@ body .mainWrapper .modal .modalButton:active {
 
 body .mainWrapper .modal .modalButton:disabled {
   opacity: 0.5;
+}
+
+body .mainWrapper .modal .modalButton.splitButton {
+  margin-left: 2%;
 }
 
 body .mainWrapper .modal h2 {
@@ -266,10 +276,19 @@ body .mainWrapper .modal .orderPrice {
   text-align: center;
 }
 
+body .mainWrapper .modal .billText {
+  width: 49%;
+  margin-right: 2%;
+  color: #fff;
+  font-weight: bold;
+  float: left;
+  line-height: 2rem;
+  margin-bottom: 0;
+}
+
 body .mainWrapper .modal .totalPrice {
   margin-top: 1rem;
   width: 49%;
-  margin-right: 1%;
   text-align: center;
   border: 2px solid #fff;
   border-radius: 10px;
@@ -296,5 +315,35 @@ body .mainWrapper .modal.receiptModal .stepPreview .stepHolder:after {
   content: "";
   display: block;
   clear: both;
+}
+
+body .mainWrapper .modal.receiptModal.hide {
+  -webkit-filter: brightness(0.4);
+          filter: brightness(0.4);
+  pointer-events: none;
+}
+
+body .mainWrapper .modal.billModal {
+  max-width: 500px;
+}
+
+body .mainWrapper .modal.billModal h2 {
+  text-align: center;
+}
+
+body .mainWrapper .modal.billModal p {
+  float: left;
+  font-weight: bold;
+  color: #fff;
+  width: 49%;
+  margin-right: 2%;
+  margin: 0;
+  line-height: 2rem;
+}
+
+body .mainWrapper .modal.billModal .tabBill {
+  width: 49%;
+  float: left;
+  margin-bottom: 1rem;
 }
 /*# sourceMappingURL=style.css.map */
