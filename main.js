@@ -8,8 +8,8 @@
         showElement = "",
         loadPlaceName = "",
         language = "",
-        resetOrderModal = "";
-        splitBillModal = "";
+        resetOrderModal = "",
+        splitBillModal = "",
         billValue = "";
     //add event listeners to the app elements
     function addEventListeners() {
